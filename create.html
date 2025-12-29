@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nytt Innlegg - CoFound</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CoFound Logo" class="logo-img">
+                <span>CoFound</span>
+            </a>
+            <div class="nav-links">
+
+                <a href="profile.html">Min Profil</a>
+            </div>
+            <div class="user-menu">
+                <!-- Data fylles inn av auth.js -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Vi bruker en sentrert layout for skjemaet -->
+        <div class="create-post-container">
+            <div class="card">
+                <h2>Opprett nytt innlegg</h2>
+                <p class="subtitle">Fortell verden hva du jobber med og hvem du ser etter.</p>
+
+                <form id="create-post-form">
+                    <div class="form-group">
+                        <label for="title">Tittel</label>
+                        <input type="text" id="title" placeholder="F.eks. Søker CTO til fintech-startup" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="category">Kategori (Hovedfilter)</label>
+                        <select id="category" required>
+                            <option value="" disabled selected>Velg en kategori</option>
+                            <option value="Utvikling">Utvikling</option>
+                            <option value="Design">Design</option>
+                            <option value="Markedsføring">Markedsføring</option>
+                            <option value="Salg">Salg</option>
+                            <option value="Ledelse">Ledelse</option>
+                            <option value="Økonomi">Økonomi</option>
+                            <option value="Annet">Annet</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="custom-tags">Tags (ferdigheter, teknologier) - skill med komma</label>
+                        <input type="text" id="custom-tags" placeholder="F.eks: React, B2B Salg, Regnskap, AI">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Beskrivelse</label>
+                        <textarea id="description" placeholder="Beskriv prosjektet ditt og hvem du ser etter..."
+                            required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="image-file">Bilde (Valgfritt)</label>
+                        <div style="display: flex; flex-direction: column; gap: 10px;">
+                            <input type="file" id="image-file" accept="image/*">
+                            <input type="hidden" id="image-url"> <!-- Skjult felt for URL -->
+                            <div id="image-preview-container" style="display: none;">
+                                <p style="font-size: 0.8rem; color: var(--text-secondary);">Forhåndsvisning:</p>
+                                <img id="image-preview" src="" alt="Preview"
+                                    style="max-width: 100%; max-height: 200px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags">Nøkkelord (kommaseparert)</label>
+                        <input type="text" id="tags" placeholder="F.eks. React, Salg, Bærekraft">
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="index.html" class="btn-secondary">Avbryt</a>
+                        <button type="submit" class="btn-primary">Publiser Innlegg</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="supabase.js"></script>
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="create.js"></script>
+</body>
+
+</html>

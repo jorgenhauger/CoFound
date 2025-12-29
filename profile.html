@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Min Profil - CoFound</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <!-- Navigasjonsbar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CoFound Logo" class="logo-img">
+                <span>CoFound</span>
+            </a>
+            <div class="nav-links">
+
+                <a href="profile.html" class="active">Min Profil</a>
+                <a href="create.html" class="btn-primary"
+                    style="color: white; margin-left: var(--spacing-lg); padding: 8px 16px; border-radius: var(--radius-md); text-decoration: none;">Nytt
+                    Innlegg</a>
+            </div>
+            <div class="user-menu">
+                <!-- Fylles av JS -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="container main-layout profile-layout">
+
+        <!-- Profil Header -->
+        <section class="profile-header-card">
+            <div class="profile-cover"></div>
+            <div class="profile-info">
+                <img id="profile-avatar" src="" alt="Profilbilde" class="profile-avatar-large">
+                <h1 id="profile-name">Navn Navnesen</h1>
+                <p id="profile-role" class="profile-role">Rolle</p>
+                <div class="profile-actions">
+                    <a id="profile-linkedin" href="#" target="_blank" class="btn-secondary">LinkedIn Profil</a>
+                    <a href="edit-profile.html" class="btn-primary" style="text-decoration: none;">Rediger Profil</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profil Innhold -->
+        <div class="profile-grid">
+
+            <!-- Venstre kolonne: Om & Ferdigheter -->
+            <div class="profile-sidebar">
+                <div class="card">
+                    <h3>Om meg</h3>
+                    <p id="profile-bio">Her kommer bio...</p>
+                </div>
+
+                <div class="card">
+                    <h3>Ferdigheter</h3>
+                    <div id="profile-skills" class="tags-container">
+                        <!-- Ferdigheter lastes her -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Høyre kolonne: Erfaring -->
+            <div class="profile-main">
+                <div class="card">
+                    <h3>Erfaring</h3>
+                    <div id="profile-experience" class="experience-list">
+                        <!-- Erfaring lastes her -->
+                    </div>
+                </div>
+
+                <!-- Mine Innlegg Seksjon -->
+                <div class="card" id="my-posts-card" style="display: none;">
+                    <!-- Skjult som standard, vises hvis det er innlegg -->
+                    <h3>Mine Innlegg</h3>
+                    <div id="profile-posts-container" class="profile-posts-list">
+                        <!-- Innlegg lastes her -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="supabase.js"></script>
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="profile.js"></script>
+</body>
+
+</html>

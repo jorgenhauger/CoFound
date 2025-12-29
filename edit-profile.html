@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rediger Profil - CoFound</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CoFound Logo" class="logo-img">
+                <span>CoFound</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Utforsk</a>
+                <a href="profile.html" class="active">Min Profil</a>
+                <a href="create.html" class="btn-primary"
+                    style="color: white; margin-left: var(--spacing-lg); padding: 8px 16px; border-radius: var(--radius-md); text-decoration: none;">Nytt
+                    Innlegg</a>
+            </div>
+            <div class="user-menu">
+                <!-- Fylles av JS -->
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <div class="create-post-container">
+            <div class="card">
+                <h2>Rediger Profil</h2>
+                <p class="subtitle">Oppdater informasjonen din slik at andre finner deg.</p>
+
+                <form id="edit-profile-form">
+                    <div class="form-group">
+                        <label for="name">Navn</label>
+                        <input type="text" id="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="role">Rolle / Tittel</label>
+                        <input type="text" id="role" placeholder="F.eks. Founder, Utvikler, Student" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="avatar-file">Profilbilde</label>
+                        <div style="display: flex; align-items: center; gap: 20px;">
+                            <img id="avatar-preview" src="" alt="Forhåndsvisning" class="avatar-small"
+                                style="width: 60px; height: 60px;">
+                            <input type="file" id="avatar-file" accept="image/*">
+                        </div>
+                        <input type="hidden" id="avatar-url"> <!-- Skjult felt for å lagre URL-en -->
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Last opp et bilde
+                            (JPG, PNG)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="bio">Om meg (Bio)</label>
+                        <textarea id="bio" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="linkedin">LinkedIn URL</label>
+                        <input type="url" id="linkedin" placeholder="https://linkedin.com/in/deg">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skills">Ferdigheter (kommaseparert)</label>
+                        <input type="text" id="skills" placeholder="Salg, Ledelse, Koding">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Erfaring</label>
+                        <div id="experience-container">
+                            <!-- Her legges erfaringer til dynamisk -->
+                        </div>
+                        <button type="button" id="add-experience-btn" class="btn-secondary"
+                            style="margin-top: 10px; width: 100%;">+ Legg til jobb</button>
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="profile.html" class="btn-secondary">Avbryt</a>
+                        <button type="submit" class="btn-primary">Lagre Endringer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="supabase.js"></script>
+    <script src="data.js"></script>
+    <script src="utils.js"></script>
+    <script src="auth.js"></script>
+    <script src="edit-profile.js"></script>
+</body>
+
+</html>

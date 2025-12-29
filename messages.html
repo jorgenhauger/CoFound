@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meldinger - CoFound</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CoFound Logo" class="logo-img">
+                <span>CoFound</span>
+            </a>
+            <div class="nav-links">
+
+                <a href="create.html" class="btn-primary">Opprett innlegg</a>
+                <a href="messages.html" class="active">Meldinger <span id="navbar-unread-badge" class="unread-badge"
+                        style="display: none;">0</span></a>
+            </div>
+            <div class="user-menu">
+                <!-- Fylles av auth.js -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container" style="max-width: 900px; margin: 40px auto;">
+        <div class="messages-header">
+            <h1>Mine meldinger</h1>
+            <p class="text-secondary">Se meldinger fra andre brukere</p>
+        </div>
+
+        <!-- Messages List -->
+        <div id="messages-container" class="messages-list">
+            <!-- Messages will be loaded here by JavaScript -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state" style="display: none;">
+            <p>📭 Ingen meldinger ennå.</p>
+            <p class="text-secondary">Når noen sender deg en melding, vil den dukke opp her.</p>
+        </div>
+    </main>
+
+    <script src="supabase.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script src="utils.js"></script>
+    <script src="messages.js"></script>
+</body>
+
+</html>

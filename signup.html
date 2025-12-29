@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrer deg - CoFound</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="CoFound Logo" class="logo-img">
+                <span>CoFound</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container main-layout"
+        style="display: flex; justify-content: center; align-items: center; min-height: 80vh; margin-top: 0;">
+        <div class="card" style="width: 100%; max-width: 650px; padding: 40px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+                <h1 style="font-size: 1.75rem; margin-bottom: 10px;">Bli med i CoFound</h1>
+                <p>Finn din perfekte co-founder i dag</p>
+            </div>
+
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="name">Fullt navn</label>
+                    <input type="text" id="name" placeholder="Ola Nordmann" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Jeg er en:</label>
+                    <div style="display: flex; gap: 20px; margin-top: 8px;">
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; cursor: pointer;">
+                            <input type="radio" name="role" value="Founder" checked style="width: auto; margin: 0;">
+                            Founder 🚀
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 8px; font-weight: 400; cursor: pointer;">
+                            <input type="radio" name="role" value="Co-founder" style="width: auto; margin: 0;">
+                            Co-founder 🤝
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-post</label>
+                    <input type="email" id="email" placeholder="din@epost.no" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Passord</label>
+                    <input type="password" id="password" placeholder="Minst 8 tegn" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm-password">Bekreft passord</label>
+                    <input type="password" id="confirm-password" placeholder="Gjenta passord" required>
+                </div>
+
+                <button type="submit" class="btn-primary"
+                    style="width: 100%; justify-content: center; padding: 12px;">Opprett konto</button>
+            </form>
+
+            <div style="text-align: center; margin-top: 20px; font-size: 0.95rem;">
+                <p>Har du allerede konto? <a href="login.html" style="font-weight: 500;">Logg inn</a></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="supabase.js"></script>
+    <script src="utils.js"></script>
+    <script src="data.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            if (password !== confirmPassword) {
+                showToast("Passordene er ikke like!", "error");
+                return;
+            }
+
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const role = document.querySelector('input[name="role"]:checked').value;
+
+            const result = await registerUser(name, email, password, role);
+
+            if (result.success) {
+                showToast(result.message, "success");
+                // Logg inn brukeren automatisk eller send til login
+                // Her sender vi til login for å være tydelig
+                redirectWithDelay('login.html', 1500);
+            } else {
+                showToast(result.message, "error");
+            }
+        });
+    </script>
+</body>
+
+</html>
