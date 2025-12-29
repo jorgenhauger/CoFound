@@ -40,7 +40,7 @@ async function loadPostData(postId) {
     const post = await getPostById(postId); // Fra data.js
     if (!post) {
         alert("Fant ikke innlegget.");
-        window.location.href = 'index.html';
+        window.location.href = 'feed.html';
         return;
     }
 
@@ -120,8 +120,8 @@ form.addEventListener('submit', async (e) => {
     if (result.success) {
         showToast(editPostId ? "Innlegg oppdatert! ✅" : "Innlegg publisert! 🚀", "success");
         setTimeout(() => {
-            // Redirect tilbake til profil hvis man redigerte, ellers index
-            window.location.href = editPostId ? 'profile.html' : 'index.html';
+            // Redirect tilbake til profil hvis man redigerte, ellers feed
+            window.location.href = editPostId ? 'profile.html' : 'feed.html';
         }, 1500);
     } else {
         showToast(result.message, "error");

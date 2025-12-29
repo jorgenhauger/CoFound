@@ -4,159 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CoFound - Finn din partner</title>
+    <title>CoFound - Finn din partner og bygg fremtiden sammen</title>
     <meta name="description"
-        content="Norges ledende plattform for å finne co-founder og starte bedrift. Finn prosjekter, partnere og kompetanse.">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://cofound.no/">
-    <meta property="og:title" content="CoFound - Finn din partner">
-    <meta property="og:description"
-        content="Norges ledende plattform for å finne co-founder og starte bedrift. Finn prosjekter, partnere og kompetanse.">
-    <meta property="og:image" content="https://cofound.no/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://cofound.no/">
-    <meta property="twitter:title" content="CoFound - Finn din partner">
-    <meta property="twitter:description"
-        content="Norges ledende plattform for å finne co-founder og starte bedrift. Finn prosjekter, partnere og kompetanse.">
-    <meta property="twitter:image" content="https://cofound.no/og-image.jpg">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" href="favicon.png">
+        content="Knytter idéhavere sammen med talenter. Finn din neste co-founder på Norges ledende plattform.">
 
     <link rel="stylesheet" href="style.css">
-    <!-- Henter inn Google Fonts for et moderne utseende: Poppins -->
+    <link rel="stylesheet" href="landing.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
-<body>
+<body class="landing-body">
 
-    <!-- Navigasjonsbar -->
-    <nav class="navbar">
+    <!-- Navikasjonsbar -->
+    <nav class="navbar landing-nav">
         <div class="container nav-content">
-            <a href="index.html" class="logo">
+            <a href="index.html" class="logo" style="color: #fff;">
                 <img src="logo.png" alt="CoFound Logo" class="logo-img">
                 <span>CoFound</span>
             </a>
             <div class="nav-links">
-
-                <div class="search-container">
-                    <input type="text" id="search-input" placeholder="Søk etter prosjekter, folk eller skills..."
-                        class="search-input">
-                    <svg class="search-icon" viewBox="0 0 24 24">
-                        <path
-                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
-                    </svg>
-                </div>
-                <a href="create.html" class="btn-primary">Opprett innlegg</a>
-                <a href="messages.html">Meldinger <span id="navbar-unread-badge" class="unread-badge"
-                        style="display: none;">0</span></a>
-            </div>
-            <div class="user-menu">
-                <!-- Data fylles inn av auth.js -->
+                <a href="login.html" style="color: #9ca3af;">Logg inn</a>
+                <a href="signup.html" class="landing-btn btn-glow" style="padding: 10px 24px; font-size: 0.95rem;">Kom i
+                    gang</a>
             </div>
         </div>
     </nav>
 
-    <!-- Hovedinnhold -->
-    <main class="container">
-        <!-- Tab Navigation -->
-        <div class="tab-navigation">
-            <button class="tab-btn active" data-tab="projects">Prosjekter</button>
-            <button class="tab-btn" data-tab="cofounders">Co-founders</button>
-        </div>
-
-        <div class="main-layout">
-            <!-- Venstre kolonne: Filter -->
-            <aside class="sidebar">
-                <div class="filter-card">
-                    <h3 id="filter-title">Filtrer etter kategori</h3>
-
-                    <!-- Category Filters (for Projects) -->
-                    <div id="category-filters" class="filter-options">
-                        <label class="filter-option">
-                            <input type="checkbox" value="Utvikling">
-                            <span>Utvikling</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Design">
-                            <span>Design</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Markedsføring">
-                            <span>Markedsføring</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Salg">
-                            <span>Salg</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Ledelse">
-                            <span>Ledelse</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Økonomi">
-                            <span>Økonomi</span>
-                        </label>
-                        <label class="filter-option">
-                            <input type="checkbox" value="Annet">
-                            <span>Annet</span>
-                        </label>
-                    </div>
-
-                    <!-- Skill Filters (for Co-founders, hidden by default) -->
-                    <div id="skill-filters" class="skill-filter-container" style="display: none;">
-                        <div id="active-skill-filters" class="active-filters">
-                            <!-- Active skill pills will appear here -->
-                        </div>
-                        <div id="available-skills" class="available-skills">
-                            <!-- Available skill pills will appear here -->
-                        </div>
-                    </div>
-                </div>
-            </aside>
-
-            <!-- Feed med innlegg -->
-            <section id="projects-section" class="feed-section">
-                <div id="feed">
-                    <!-- Innlegg lastes her dynamisk -->
-                </div>
-            </section>
-
-            <!-- Co-founders Section (hidden by default) -->
-            <section id="cofounders-section" class="feed-section" style="display: none;">
-                <div id="cofounder-feed">
-                    <!-- Co-founder profiler lastes her dynamisk -->
-                </div>
-            </section>
-        </div>
-    </main>
-
-    <!-- Modal for "Meld interesse" -->
-    <div id="interest-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Meld interesse</h2>
-            <p>Skriv en kort melding til <span id="modal-recipient-name">Founderen</span>:</p>
-            <textarea id="interest-message"
-                placeholder="Hei! Jeg så prosjektet ditt og tenker at jeg passer perfekt fordi..."></textarea>
-            <div style="text-align: right; margin-top: 15px;">
-                <button id="send-interest-btn" class="btn-primary">Send melding</button>
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <h1 class="float-img">Finn din neste <br><span class="gradient-text">Co-founder</span></h1>
+            <p>Norges ledende plattform for idéhavere og talenter som vil bygge fremtiden sammen. Gratis å starte,
+                umulig å stoppe.</p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="signup.html" class="landing-btn btn-glow">Start reisen gratis</a>
+                <a href="login.html" class="landing-btn"
+                    style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">Utforsk
+                    prosjekter</a>
             </div>
         </div>
-    </div>
+    </header>
+
+    <!-- Value Props -->
+    <section class="features">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 60px;">
+                <h2 style="color: #fff; font-size: 2.5rem; letter-spacing: -1px;">Bygget for gründere</h2>
+                <p style="margin: 0 auto;">Alt du trenger for å gå fra idé til virkelighet på ett sted.</p>
+            </div>
+
+            <div class="feature-grid">
+                <!-- Match -->
+                <div class="feature-card">
+                    <div class="icon-box">⚡</div>
+                    <h3>Smart Matching</h3>
+                    <p>Vi kobler deg sammen med folk som har ferdighetene du mangler. Enten du trenger en teknisk geni
+                        eller en salgsmaskin.</p>
+                </div>
+
+                <!-- Verified -->
+                <div class="feature-card">
+                    <div class="icon-box">🛡️</div>
+                    <h3>Verifiserte profiler</h3>
+                    <p>Bygg tillit med detaljerte profiler, erfaring og porteføljer. Finn folk som faktisk har gjort det
+                        før.</p>
+                </div>
+
+                <!-- Seamless -->
+                <div class="feature-card">
+                    <div class="icon-box">💬</div>
+                    <h3>Sømløs kommunikasjon</h3>
+                    <p>Meld interesse og start samtalen direkte i plattformen. Ingen friksjon, bare fremdrift.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Final CTA -->
+    <footer style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+        <div class="container">
+            <h2 style="color: #fff; margin-bottom: 24px;">Klar for å finne din partner?</h2>
+            <a href="signup.html" class="landing-btn btn-glow">Opprett din profil nå</a>
+            <p style="margin-top: 40px; font-size: 0.9rem;">&copy; 2024 CoFound. Alle rettigheter reservert.</p>
+        </div>
+    </footer>
 
     <script src="supabase.js"></script>
-    <script src="data.js"></script>
-    <script src="utils.js"></script>
     <script src="auth.js"></script>
-    <script src="app.js"></script>
-    <script src="navbar-badge.js"></script>
+    <script>
+        // Enkel sjekk: Hvis brukeren er logget inn, send dem rett til feed.html
+        document.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await db.auth.getSession();
+            if (session) {
+                window.location.href = 'feed.html';
+            }
+        });
+    </script>
 </body>
 
 </html>
