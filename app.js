@@ -43,23 +43,23 @@ function createPostHTML(post) {
             </button>
             <div class="post-header">
                 <a href="profile.html?user=${post.user_id}" style="text-decoration: none; display: flex; gap: 10px; align-items: center;">
-                    <img src="${post.avatar}" alt="${post.author}" class="post-avatar">
+                    <img src="${post.avatar}" alt="${escapeHTML(post.author)}" class="post-avatar">
                     <div class="post-author">
-                        <h3 style="color: var(--text-main); margin: 0; transition: color 0.2s;">${post.author}</h3>
-                        <span class="post-role">${post.role}</span>
+                        <h3 style="color: var(--text-main); margin: 0; transition: color 0.2s;">${escapeHTML(post.author)}</h3>
+                        <span class="post-role">${escapeHTML(post.role)}</span>
                     </div>
                 </a>
             </div>
             <div class="post-content">
-                <h2>${post.title}</h2>
+                <h2>${escapeHTML(post.title)}</h2>
                 ${imageHTML}
-                <p>${post.description}</p>
+                <p>${escapeHTML(post.description)}</p>
                 <div class="post-tags">
                     ${tagsHTML}
                 </div>
             </div>
             <div class="post-actions" style="justify-content: flex-end; align-items: center;">
-                <button class="btn-primary" onclick="openInterestModal('${post.user_id}', '${post.author}', '${post.title}')">Meld interesse</button>
+                <button class="btn-primary" onclick="openInterestModal('${post.user_id}', '${escapeHTML(post.author)}', '${escapeHTML(post.title)}')">Meld interesse</button>
             </div>
         </article>
     `;
@@ -278,21 +278,21 @@ function createCoFounderHTML(profile) {
         <article class="post-card">
             <div class="post-header">
                 <a href="profile.html?user=${profile.id}" style="text-decoration: none; display: flex; gap: 10px; align-items: center;">
-                    <img src="${profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guest'}" alt="${profile.name}" class="post-avatar">
+                    <img src="${profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guest'}" alt="${escapeHTML(profile.name)}" class="post-avatar">
                     <div class="post-author">
-                        <h3 style="color: var(--text-main); margin: 0; transition: color 0.2s;">${profile.name}</h3>
-                        <span class="role-badge ${profile.role === 'Founder' ? 'founder' : 'co-founder'}">${profile.role}</span>
+                        <h3 style="color: var(--text-main); margin: 0; transition: color 0.2s;">${escapeHTML(profile.name)}</h3>
+                        <span class="role-badge ${profile.role === 'Founder' ? 'founder' : 'co-founder'}">${escapeHTML(profile.role)}</span>
                     </div>
                 </a>
             </div>
             <div class="post-content">
-                <p>${profile.bio || 'Ingen beskrivelse.'}</p>
+                <p>${escapeHTML(profile.bio || 'Ingen beskrivelse.')}</p>
                 <div class="post-tags">
                     ${skillsHTML}
                 </div>
             </div>
             <div class="post-actions">
-                <button class="btn-primary" onclick="openInterestModal('${profile.id}', '${profile.name}', 'Samarbeid')">Kontakt</button>
+                <button class="btn-primary" onclick="openInterestModal('${profile.id}', '${escapeHTML(profile.name)}', 'Samarbeid')">Kontakt</button>
             </div>
         </article>
     `;

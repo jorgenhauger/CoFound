@@ -66,8 +66,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Fallback rendering
                 favProjectsFeed.innerHTML = favPosts.map(post => `
                     <div class="post-card">
-                        <h3>${post.title}</h3>
-                        <p>${post.description}</p>
+                        <h3>${escapeHTML(post.title)}</h3>
+                        <p>${escapeHTML(post.description)}</p>
                         <a href="#" class="btn-primary">Se mer</a>
                     </div>
                 `).join('');
@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 favCofoundersFeed.innerHTML = favUsers.map(user => createCoFounderHTML(user)).join('');
             } else {
-                favCofoundersFeed.innerHTML = favUsers.map(u => `<div class="post-card"><h3>${u.name}</h3><p>${u.role}</p></div>`).join('');
+                favCofoundersFeed.innerHTML = favUsers.map(u => `<div class="post-card"><h3>${escapeHTML(u.name)}</h3><p>${escapeHTML(u.role)}</p></div>`).join('');
             }
 
         } catch (error) {

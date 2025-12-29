@@ -105,14 +105,15 @@ function createConversationHTML(conv) {
         <div class="message-card ${unreadClass}" onclick="window.location.href='conversation.html?id=${conv.id}'">
             <div class="message-header">
                 <div class="message-from">
-                    <img src="${conv.avatar}" alt="${conv.name}" class="avatar-small">
-                    <strong>${conv.name}</strong>
+                    <img src="${conv.avatar}" alt="${escapeHTML(conv.name)}" class="avatar-small">
+                    <strong>${escapeHTML(conv.name)}</strong>
                     ${conv.unreadCount > 0 ? `<span class="new-badge">${conv.unreadCount} NY</span>` : ''}
                 </div>
                 <div class="message-time">${dateStr}</div>
             </div>
-            <div class="message-preview" style="margin-left: 32px;">${previewPrefix}${lastMsg.message}</div>
+            <div class="message-preview" style="margin-left: 32px;">${previewPrefix}${escapeHTML(lastMsg.message)}</div>
         </div>
+    `;
     `;
 }
 

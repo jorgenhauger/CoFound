@@ -34,9 +34,18 @@ function redirectWithDelay(url, delay = 1000) {
     }, delay);
 }
 
+// XSS Protection Helper
+function escapeHTML(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+}
+
 // Gjør funksjoner tilgjengelig globalt
 window.showToast = showToast;
 window.redirectWithDelay = redirectWithDelay;
+window.escapeHTML = escapeHTML;
 
 // Favorites Logic
 // Now just wrappers or placeholders, as logic moved to data.js

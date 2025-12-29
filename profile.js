@@ -54,7 +54,7 @@ async function loadProfile() {
         const roleClass = profileToLoad.role === 'Founder' ? 'founder' : 'co-founder';
         const roleNorwegian = profileToLoad.role === 'Founder' ? 'Idéhaver' : 'Bidragsyter';
         profileRole.innerHTML = `
-            ${profileToLoad.role} 
+            ${escapeHTML(profileToLoad.role)} 
             <span class="role-badge ${roleClass}">${roleNorwegian}</span>
         `;
     }
@@ -106,11 +106,11 @@ async function loadProfile() {
             profileExperience.innerHTML = experience.map(exp => `
                 <div class="experience-item">
                     <div class="exp-header">
-                        <h4>${exp.role}</h4>
-                        <span class="exp-period">${exp.period}</span>
+                        <h4>${escapeHTML(exp.role)}</h4>
+                        <span class="exp-period">${escapeHTML(exp.period)}</span>
                     </div>
-                    <p class="exp-company">${exp.company}</p>
-                    <p class="exp-desc">${exp.description}</p>
+                    <p class="exp-company">${escapeHTML(exp.company)}</p>
+                    <p class="exp-desc">${escapeHTML(exp.description)}</p>
                 </div>
             `).join('');
         } else {
@@ -142,9 +142,9 @@ async function loadProfile() {
             profilePostsContainer.innerHTML = myPosts.map(post => `
                 <div class="profile-post-item">
                     <div class="profile-post-content">
-                        <h4>${post.title}</h4>
+                        <h4>${escapeHTML(post.title)}</h4>
                         <span class="post-date" style="font-size: 0.8rem; color: var(--text-secondary);">${new Date().toLocaleDateString()}</span>
-                        <p>${post.description.substring(0, 80)}...</p>
+                        <p>${escapeHTML(post.description.substring(0, 80))}...</p>
                     </div>
                     <div class="profile-post-actions">
                          ${isMyProfile ? `

@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             const { data: profile } = await db.from('profiles').select('*').eq('id', participantId).single();
 
             if (profile) {
-                if (participantNameEl) participantNameEl.textContent = profile.name;
-                if (participantAvatarEl) participantAvatarEl.src = profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`;
+                if (participantNameEl) participantNameEl.textContent = profile.name; // textContent er trygt
+                if (participantAvatarEl) participantAvatarEl.src = profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(profile.name)}`;
                 return profile;
             } else {
                 // Fallback UI
@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
                 messageEl.innerHTML = `
                     <div class="bubble-content">
-                        ${msg.postTitle ? `<div class="bubble-context">📌 ${msg.postTitle}</div>` : ''}
-                        <p>${msg.message}</p>
+                        ${msg.postTitle ? `<div class="bubble-context">📌 ${escapeHTML(msg.postTitle)}</div>` : ''}
+                        <p>${escapeHTML(msg.message)}</p>
                         <span class="bubble-time">${timeStr}</span>
                     </div>
                 `;
