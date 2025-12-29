@@ -36,6 +36,8 @@
     line-height: 1.1;
     margin-bottom: 24px;
     letter-spacing: -2px;
+    color: #ffffff;
+    /* Sørger for at denne alltid er hvit */
 }
 
 .hero .gradient-text {
@@ -61,11 +63,13 @@
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: none;
+    text-decoration: none !important;
 }
 
 .btn-glow {
     background: #1a73e8;
-    color: white;
+    color: #ffffff !important;
+    /* Tvinger teksten til å være hvit */
     box-shadow: 0 0 20px rgba(26, 115, 232, 0.4);
 }
 
