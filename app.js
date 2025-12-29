@@ -58,7 +58,10 @@ function createPostHTML(post) {
                     ${tagsHTML}
                 </div>
             </div>
-            <div class="post-actions" style="justify-content: flex-end; align-items: center;">
+            <div class="post-actions" style="display: flex; justify-content: space-between; align-items: center;">
+                <button class="btn-secondary btn-sm" onclick="sharePost('${escapeHTML(post.title)}', 'Sjekk ut dette prosjektet på CoFound!', window.location.origin + '/feed.html?post=${post.id}')" title="Del innlegg" style="border: none; background: transparent; padding: 8px; color: var(--text-secondary);">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                </button>
                 <button class="btn-primary" onclick="openInterestModal('${post.user_id}', '${escapeHTML(post.author)}', '${escapeHTML(post.title)}')">Meld interesse</button>
             </div>
         </article>
@@ -119,6 +122,19 @@ function renderPosts(postsToRender) {
     feedContainer.innerHTML = postsToRender.map(post => createPostHTML(post)).join('');
 }
 
+// Funksjon for å vise skeleton loaders mens vi venter på data
+function renderSkeletons(container, count = 3) {
+    const skeletonHTML = `
+        <div class="skeleton-card">
+            <div class="skeleton skeleton-avatar"></div>
+            <div class="skeleton skeleton-title"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text"></div>
+            <div class="skeleton skeleton-text short"></div>
+        </div>
+    `.repeat(count);
+    container.innerHTML = skeletonHTML;
+}
 
 // --- HOVEDFUNKSJON FOR Å LASTE APPEN ---
 async function initApp() {
@@ -130,8 +146,8 @@ async function initApp() {
         myFavoriteUsers = await getFavorites('user');
     }
 
-    // Viser laste-spinner
-    feedContainer.innerHTML = '<div class="loading-spinner"></div><p class="loading-container">Laster innlegg...</p>';
+    // Viser skeleton loaders i stedet for spinner
+    renderSkeletons(feedContainer, 3);
 
     // Hent innlegg fra Supabase (via data.js)
     allPosts = await getPosts();
@@ -193,6 +209,7 @@ sendInterestBtn.addEventListener('click', async () => {
 
     if (result.success) {
         showToast('Melding sendt! ✉️', 'success');
+        if (window.triggerConfetti) triggerConfetti();
         modal.classList.remove('show');
         setTimeout(() => { modal.style.display = 'none'; }, 300);
         interestMessage.value = '';
@@ -274,8 +291,16 @@ function createCoFounderHTML(profile) {
     const skills = profile.skills || [];
     const skillsHTML = skills.map(skill => `<span class="tag">${skill}</span>`).join('');
 
+    const isFav = myFavoriteUsers.includes(String(profile.id));
+    const activeClass = isFav ? 'active' : '';
+
     return `
-        <article class="post-card">
+        <article class="post-card" style="position: relative;">
+            <button class="favorite-btn ${activeClass}" onclick="toggleFavoriteBtn(this, 'user', '${profile.id}')" title="Lagre favoritt">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"></path>
+                </svg>
+            </button>
             <div class="post-header">
                 <a href="profile.html?user=${profile.id}" style="text-decoration: none; display: flex; gap: 10px; align-items: center;">
                     <img src="${profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guest'}" alt="${escapeHTML(profile.name)}" class="post-avatar">
@@ -291,7 +316,10 @@ function createCoFounderHTML(profile) {
                     ${skillsHTML}
                 </div>
             </div>
-            <div class="post-actions">
+            <div class="post-actions" style="display: flex; justify-content: space-between; align-items: center;">
+                <button class="btn-secondary btn-sm" onclick="sharePost('${escapeHTML(profile.name)}', 'Sjekk ut denne co-founderen på CoFound!', window.location.origin + '/profile.html?user=${profile.id}')" title="Del profil" style="border: none; background: transparent; padding: 8px; color: var(--text-secondary);">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+                </button>
                 <button class="btn-primary" onclick="openInterestModal('${profile.id}', '${escapeHTML(profile.name)}', 'Samarbeid')">Kontakt</button>
             </div>
         </article>

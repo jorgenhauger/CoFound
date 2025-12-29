@@ -566,3 +566,41 @@ async function getFavoriteItems(type) {
     }
 }
 
+
+// --- KONTO-HÅNDTERING ---
+
+// Slett nåværende bruker og all tilhørende data
+async function deleteCurrentUserAccount() {
+    const user = await getSessionUser();
+    if (!user) return { success: false, message: "Ikke logget inn" };
+
+    try {
+        // 1. Slett meldinger
+        await db.from('messages')
+            .delete()
+            .or(`from_id.eq.${user.id},to_id.eq.${user.id}`);
+
+        // 2. Slett favoritter
+        await db.from('favorites')
+            .delete()
+            .eq('user_id', user.id);
+
+        // 3. Slett innlegg
+        await db.from('posts')
+            .delete()
+            .eq('user_id', user.id);
+
+        // 4. Slett profil
+        await db.from('profiles')
+            .delete()
+            .eq('id', user.id);
+
+        // 5. Logg ut
+        await logoutUser();
+
+        return { success: true };
+    } catch (error) {
+        console.error("Feil ved sletting av konto:", error);
+        return { success: false, message: error.message };
+    }
+}

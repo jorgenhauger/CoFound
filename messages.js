@@ -114,7 +114,6 @@ function createConversationHTML(conv) {
             <div class="message-preview" style="margin-left: 32px;">${previewPrefix}${escapeHTML(lastMsg.message)}</div>
         </div>
     `;
-    `;
 }
 
 function updateNavbarBadge(conversations) {
@@ -130,9 +129,28 @@ function updateNavbarBadge(conversations) {
     }
 }
 
+
+// Sanntid: Lytt etter nye meldinger
+async function setupMessageRealtime() {
+    const user = await getSessionUser();
+    if (!user) return;
+
+    db.channel('messages-inbox')
+        .on('postgres_changes', {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'messages',
+            filter: `to_id=eq.${user.id}`
+        }, (payload) => {
+            console.log('Ny melding mottatt:', payload);
+            renderMessages(); // Last alt på nytt for å oppdatere innboksen
+            if (window.showToast) showToast('Ny melding mottatt! ✉️', 'success');
+        })
+        .subscribe();
+}
+
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    // Vi må vente på at auth.js har sjekket session før vi laster, 
-    // men getSessionUser() håndterer det ved å være async.
     renderMessages();
+    setupMessageRealtime();
 });

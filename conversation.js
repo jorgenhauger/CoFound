@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const result = await sendMessage(participantId, "Svar", text, null);
 
             if (result.success) {
+                if (window.triggerConfetti) triggerConfetti();
                 replyInput.value = '';
                 await renderChat(); // Refresh chat
             } else {
@@ -100,9 +101,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         await loadParticipant();
         await renderChat();
 
-        // Mark as read immediately
-        markConversationAsRead(participantId);
 
+        // --- Sanntid: Lytt etter nye meldinger i denne samtalen ---
+        async function setupConversationRealtime() {
+            db.channel(`chat-${participantId}`)
+                .on('postgres_changes', {
+                    event: 'INSERT',
+                    schema: 'public',
+                    table: 'messages'
+                }, (payload) => {
+                    const msg = payload.new;
+                    // Sjekk om meldingen tilhører denne samtalen
+                    const isBetweenUs = (msg.from_id === currentUser.id && msg.to_id === participantId) ||
+                        (msg.from_id === participantId && msg.to_id === currentUser.id);
+
+                    if (isBetweenUs) {
+                        console.log('Ny chat-melding mottatt!');
+                        renderChat();
+                        if (msg.to_id === currentUser.id) {
+                            markConversationAsRead(participantId);
+                        }
+                    }
+                })
+                .subscribe();
+        }
+
+        // --- Init ---
+        await loadParticipant();
+        await renderChat();
+        markConversationAsRead(participantId);
+        setupConversationRealtime();
 
         // --- Event Listeners ---
         if (sendReplyBtn) sendReplyBtn.addEventListener('click', sendReply);
@@ -115,12 +143,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
         }
-
-        // Optional: Poll for new messages every 5 seconds (Realtime subscription is better but this is MVP)
-        setInterval(() => {
-            renderChat(); // Silent refresh
-        }, 5000);
-
 
     } catch (error) {
         console.error('Error in conversation.js:', error);

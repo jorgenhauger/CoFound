@@ -160,6 +160,7 @@ form.addEventListener('submit', async (e) => {
 
     if (result.success) {
         showToast('Profil oppdatert!', 'success');
+        if (window.triggerConfetti) triggerConfetti();
         setTimeout(() => {
             window.location.href = 'profile.html';
         }, 1000);
@@ -169,6 +170,33 @@ form.addEventListener('submit', async (e) => {
         submitBtn.disabled = false;
     }
 });
+
+
+// Sletting av konto
+const deleteAccountBtn = document.getElementById('delete-account-btn');
+if (deleteAccountBtn) {
+    deleteAccountBtn.addEventListener('click', async () => {
+        const confirmDelete = confirm("Er du helt sikker på at du vil slette kontoen din? Dette kan ikke angres.");
+        if (confirmDelete) {
+            const doubleConfirm = confirm("Virkelig helt sikker? Alle dine innlegg og meldinger vil forsvinne permanent.");
+            if (doubleConfirm) {
+                deleteAccountBtn.innerText = "Sletter...";
+                deleteAccountBtn.disabled = true;
+
+                const result = await deleteCurrentUserAccount();
+
+                if (result.success) {
+                    alert("Kontoen din er nå slettet. Takk for tiden din på CoFound.");
+                    window.location.href = 'index.html';
+                } else {
+                    alert("Noe gikk galt ved sletting: " + result.message);
+                    deleteAccountBtn.innerText = "Slett min konto";
+                    deleteAccountBtn.disabled = false;
+                }
+            }
+        }
+    });
+}
 
 // Kjør når siden laster
 document.addEventListener('DOMContentLoaded', loadFormData);

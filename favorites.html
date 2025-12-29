@@ -56,6 +56,16 @@
                 <!-- Favorites will be loaded here -->
             </div>
         </section>
+        <!-- Empty State -->
+        <div id="empty-state" class="empty-state"
+            style="display: none; text-align: center; padding: 60px 20px; background: #f8f9fa; border-radius: 16px; border: 1px dashed var(--border-color); margin-top: 20px;">
+            <div style="font-size: 4rem; margin-bottom: 20px;">⭐</div>
+            <h2 id="empty-state-title" style="margin-bottom: 10px;">Ingen favoritter ennå</h2>
+            <p id="empty-state-text" class="text-secondary"
+                style="margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                Du har ikke lagret noen prosjekter ennå. Utforsk feeden for å finne partnere!</p>
+            <a href="feed.html" class="btn-primary">Utforsk feeden</a>
+        </div>
     </main>
 
     <!-- Interest Modal (Reused) -->
@@ -70,6 +80,7 @@
     </div>
 
     <script src="supabase.js"></script>
+    <script src="theme.js"></script>
     <script src="data.js"></script>
     <script src="auth.js"></script>
     <script src="utils.js"></script>

@@ -54,6 +54,23 @@
 
             <!-- Venstre kolonne: Om & Ferdigheter -->
             <div class="profile-sidebar">
+                <!-- Profil Progresjon Widget -->
+                <div id="profile-progress-widget" class="profile-progress-widget" style="display: none;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                        <span
+                            style="font-size: 0.8rem; font-weight: 500; color: var(--text-secondary);">Profil-fullføring</span>
+                        <span id="profile-progress-text"
+                            style="font-size: 0.8rem; font-weight: 600; color: var(--primary-color);">0%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div id="profile-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
+                    </div>
+                    <p id="profile-progress-tip"
+                        style="font-size: 0.7rem; color: var(--text-secondary); margin-top: 8px; margin-bottom: 0;">
+                        Tips: Legg til et profilbilde for +20%!</p>
+                </div>
+
                 <div class="card">
                     <h3>Om meg</h3>
                     <p id="profile-bio">Her kommer bio...</p>
@@ -63,6 +80,18 @@
                     <h3>Ferdigheter</h3>
                     <div id="profile-skills" class="tags-container">
                         <!-- Ferdigheter lastes her -->
+                    </div>
+                </div>
+
+                <!-- Systeminnstillinger (Kun for eier) -->
+                <div id="system-settings-card" class="card" style="display: none;">
+                    <h3>Innstillinger</h3>
+                    <div class="theme-switch-container">
+                        <span style="font-size: 0.9rem; color: var(--text-main);">Mørk modus</span>
+                        <label class="switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="slider"></span>
+                        </label>
                     </div>
                 </div>
             </div>
@@ -91,6 +120,7 @@
     </main>
 
     <script src="supabase.js"></script>
+    <script src="theme.js"></script>
     <script src="data.js"></script>
     <script src="utils.js"></script>
     <script src="auth.js"></script>

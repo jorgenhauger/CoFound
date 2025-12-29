@@ -42,10 +42,76 @@ function escapeHTML(str) {
     return div.innerHTML;
 }
 
+// Beregn hvor komplett profilen er (0-100)
+function calculateProfileCompleteness(profile) {
+    if (!profile) return 0;
+
+    let score = 0;
+    const weights = {
+        name: 15,
+        role: 15,
+        avatar: 20,
+        bio: 20,
+        skills: 15,
+        experience: 15
+    };
+
+    if (profile.name && profile.name.trim() !== '') score += weights.name;
+    if (profile.role && profile.role.trim() !== '') score += weights.role;
+    // Sjekk om avatar er opplastet (vi antar alt som ikke er dicebear er "ekte" eller i hvert fall valgt)
+    if (profile.avatar && !profile.avatar.includes('api.dicebear.com')) score += weights.avatar;
+    if (profile.bio && profile.bio.trim().length > 5) score += weights.bio;
+    if (profile.skills && profile.skills.length > 0) score += weights.skills;
+    if (profile.experience && profile.experience.length > 0) score += weights.experience;
+
+    return Math.min(score, 100);
+}
+
+// Konfetti-hjelper (laster biblioteket dynamisk ved behov)
+function triggerConfetti() {
+    if (typeof confetti === 'function') {
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#1a73e8', '#34a853', '#f9ab00', '#ea4335'], // Google-farger
+            ticks: 200,
+            gravity: 1.2
+        });
+    } else {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+        script.onload = () => triggerConfetti();
+        document.head.appendChild(script);
+    }
+}
+
 // Gjør funksjoner tilgjengelig globalt
 window.showToast = showToast;
 window.redirectWithDelay = redirectWithDelay;
 window.escapeHTML = escapeHTML;
+window.calculateProfileCompleteness = calculateProfileCompleteness;
+window.triggerConfetti = triggerConfetti;
+
+// Delings-hjelper
+function sharePost(title, text, url) {
+    if (navigator.share) {
+        navigator.share({
+            title: title,
+            text: text,
+            url: url || window.location.href,
+        })
+            .then(() => console.log('Delt suksessfullt'))
+            .catch((error) => console.log('Error sharing:', error));
+    } else {
+        // Fallback: Kopier til utklippstavle
+        const shareUrl = url || window.location.href;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            showToast('Lenke kopiert til utklippstavle! 📋', 'success');
+        });
+    }
+}
+window.sharePost = sharePost;
 
 // Favorites Logic
 // Now just wrappers or placeholders, as logic moved to data.js

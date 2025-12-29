@@ -94,15 +94,36 @@
             const email = document.getElementById('email').value;
             const role = document.querySelector('input[name="role"]:checked').value;
 
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerText = "Oppretter konto...";
+
             const result = await registerUser(name, email, password, role);
 
             if (result.success) {
-                showToast(result.message, "success");
-                // Logg inn brukeren automatisk eller send til login
-                // Her sender vi til login for å være tydelig
-                redirectWithDelay('login.html', 1500);
+                // Trigger konfetti for en hyggelig velkomst
+                triggerConfetti();
+
+                // Bytt ut innholdet i kortet med en hyggelig melding
+                const card = document.querySelector('.card');
+                card.innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="font-size: 4rem; margin-bottom: 20px;">📧</div>
+                        <h2 style="margin-bottom: 15px;">Velkommen til CoFound, ${name.split(' ')[0]}!</h2>
+                        <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 25px;">
+                            Vi har sendt en bekreftelseslenke til <strong>${email}</strong>.<br>
+                            Vennligst klikk på lenken i e-posten for å aktivere kontoen din.
+                        </p>
+                        <div style="background: var(--tag-bg); padding: 15px; border-radius: 12px; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 30px;">
+                            Fant du ikke e-posten? Sjekk gjerne søppelpost-mappen.
+                        </div>
+                        <a href="login.html" class="btn-primary" style="display: inline-flex; text-decoration: none;">Gå til logg inn</a>
+                    </div>
+                `;
             } else {
                 showToast(result.message, "error");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "Opprett konto";
             }
         });
     </script>

@@ -165,6 +165,62 @@ async function loadProfile() {
             profilePostsContainer.innerHTML = '<p style="color: var(--text-secondary);">Ingen aktive innlegg.</p>';
         }
     }
+
+    // --- PROFIL PROGRESJON (Gjelder kun min profil) ---
+    if (isMyProfile) {
+        const progressWidget = document.getElementById('profile-progress-widget');
+        const progressText = document.getElementById('profile-progress-text');
+        const progressFill = document.getElementById('profile-progress-fill');
+        const progressTip = document.getElementById('profile-progress-tip');
+
+        if (progressWidget && progressText && progressFill) {
+            const completeness = calculateProfileCompleteness(profileToLoad);
+
+            if (completeness < 100) {
+                progressWidget.style.display = 'block';
+                progressText.textContent = `${completeness}%`;
+                progressFill.style.width = `${completeness}%`;
+
+                // Finn et tips basert på hva som mangler (samme logikk som i utils.js)
+                let tip = "Tips: Gjør profilen din komplett!";
+                if (!profileToLoad.avatar || profileToLoad.avatar.includes('api.dicebear.com')) {
+                    tip = "Tips: Last opp et ekte profilbilde (+20%)";
+                } else if (!profileToLoad.bio || profileToLoad.bio.length < 10) {
+                    tip = "Tips: Skriv litt mer om deg selv (+20%)";
+                } else if (!profileToLoad.skills || profileToLoad.skills.length === 0) {
+                    tip = "Tips: Legg til ferdigheter så folk finner deg (+15%)";
+                } else if (!profileToLoad.experience || profileToLoad.experience.length === 0) {
+                    tip = "Tips: Legg til din første erfaring (+15%)";
+                } else {
+                    tip = "Du er nesten i mål! Fyll ut de siste detaljene.";
+                }
+                if (progressTip) progressTip.textContent = tip;
+            } else {
+                progressWidget.style.display = 'none';
+            }
+        }
+
+        // --- SYSTEMINNSTILLINGER (Mørk modus switch) ---
+        const settingsCard = document.getElementById('system-settings-card');
+        const themeToggle = document.getElementById('dark-mode-toggle');
+
+        if (settingsCard && themeToggle) {
+            settingsCard.style.display = 'block';
+
+            // Sett initiell status på bryteren
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            themeToggle.checked = currentTheme === 'dark';
+
+            themeToggle.onchange = () => {
+                window.toggleTheme();
+            };
+
+            // Lytt etter endringer hvis temaet endres andre steder (f.eks. automatisk)
+            window.addEventListener('themeChanged', (e) => {
+                themeToggle.checked = e.detail.theme === 'dark';
+            });
+        }
+    }
 }
 
 // Slettefunksjon for profil (kun mine innlegg)

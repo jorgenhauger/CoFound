@@ -46,13 +46,19 @@
         </div>
 
         <!-- Empty State -->
-        <div id="empty-state" class="empty-state" style="display: none;">
-            <p>📭 Ingen meldinger ennå.</p>
-            <p class="text-secondary">Når noen sender deg en melding, vil den dukke opp her.</p>
+        <div id="empty-state" class="empty-state"
+            style="display: none; text-align: center; padding: 60px 20px; background: #f8f9fa; border-radius: 16px; border: 1px dashed var(--border-color);">
+            <div style="font-size: 4rem; margin-bottom: 20px;">✉️</div>
+            <h2 style="margin-bottom: 10px;">Ingen meldinger ennå</h2>
+            <p class="text-secondary"
+                style="margin-bottom: 24px; max-width: 400px; margin-left: auto; margin-right: auto;">
+                Det er stille i innboksen din. Finn en spennende co-founder eller et prosjekt for å starte samtalen!</p>
+            <a href="feed.html" class="btn-primary">Utforsk feeden</a>
         </div>
     </main>
 
     <script src="supabase.js"></script>
+    <script src="theme.js"></script>
     <script src="data.js"></script>
     <script src="auth.js"></script>
     <script src="utils.js"></script>
