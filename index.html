@@ -10,7 +10,7 @@
 
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="landing.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -18,14 +18,14 @@
 <body class="landing-body">
 
     <!-- Navikasjonsbar -->
-    <nav class="navbar landing-nav">
+    <nav class="navbar landing-nav" id="mainNav">
         <div class="container nav-content">
-            <a href="index.html" class="logo" style="color: #fff;">
+            <a href="index.html" class="logo">
                 <img src="logo.png" alt="CoFound Logo" class="logo-img">
                 <span>CoFound</span>
             </a>
             <div class="nav-links">
-                <a href="login.html" style="color: #9ca3af;">Logg inn</a>
+                <a href="login.html">Logg inn</a>
                 <a href="signup.html" class="landing-btn btn-glow" style="padding: 10px 24px; font-size: 0.95rem;">Kom i
                     gang</a>
             </div>
@@ -34,15 +34,22 @@
 
     <!-- Hero Section -->
     <header class="hero">
-        <div class="container">
-            <h1 class="float-img">Finn din neste <br><span class="gradient-text">Co-founder</span></h1>
-            <p>Norges ledende plattform for idéhavere og talenter som vil bygge fremtiden sammen. Gratis å starte,
-                umulig å stoppe.</p>
-            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
-                <a href="signup.html" class="landing-btn btn-glow">Start reisen gratis</a>
-                <a href="login.html" class="landing-btn"
-                    style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">Utforsk
-                    prosjekter</a>
+        <div class="container hero-content">
+            <div class="animate-fade-up">
+                <span class="section-tag" style="margin-bottom: 24px;">Lansert i Norge 🇳🇴</span>
+                <h1>Bygg fremtiden med <br><span class="gradient-text">riktig partner</span></h1>
+                <p>Koble deg til Norges mest ambisiøse talenter og gründere. Din neste store idé starter med hvem du
+                    bygger den med.</p>
+
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 60px;">
+                    <a href="signup.html" class="landing-btn btn-glow">Start reisen gratis</a>
+                    <a href="login.html" class="landing-btn btn-outline">Utforsk prosjekter</a>
+                </div>
+            </div>
+
+            <!-- Hero Visual Magic -->
+            <div class="hero-visual">
+                <img src="hero.png" alt="CoFound Network" class="hero-img-main">
             </div>
         </div>
     </header>
@@ -50,44 +57,54 @@
     <!-- Value Props -->
     <section class="features">
         <div class="container">
-            <div style="text-align: center; margin-bottom: 60px;">
-                <h2 style="color: #fff; font-size: 2.5rem; letter-spacing: -1px;">Bygget for gründere</h2>
-                <p style="margin: 0 auto;">Alt du trenger for å gå fra idé til virkelighet på ett sted.</p>
+            <div style="text-align: center; margin-bottom: 80px;" class="animate-fade-up delay-1">
+                <span class="section-tag">Hvorfor CoFound?</span>
+                <h2 style="font-size: 3rem; letter-spacing: -1.5px; font-weight: 800;">Bygget for gründere</h2>
+                <p style="margin: 0 auto; max-width: 600px;">Alt du trenger for å gå fra idé til virkelighet på ett
+                    sted.</p>
             </div>
 
-            <div class="feature-grid">
+            <div class="feature-grid animate-fade-up delay-2">
                 <!-- Match -->
                 <div class="feature-card">
                     <div class="icon-box">⚡</div>
                     <h3>Smart Matching</h3>
-                    <p>Vi kobler deg sammen med folk som har ferdighetene du mangler. Enten du trenger en teknisk geni
+                    <p>Vi kobler deg sammen med folk som har ferdighetene du mangler. Enten du trenger et teknisk geni
                         eller en salgsmaskin.</p>
                 </div>
 
                 <!-- Verified -->
                 <div class="feature-card">
                     <div class="icon-box">🛡️</div>
-                    <h3>Verifiserte profiler</h3>
-                    <p>Bygg tillit med detaljerte profiler, erfaring og porteføljer. Finn folk som faktisk har gjort det
-                        før.</p>
+                    <h3>Verifiserte talenter</h3>
+                    <p>Bygg tillit med detaljerte profiler, erfaring og porteføljer. Finn folk som faktisk har lidenskap
+                        for å skape.</p>
                 </div>
 
                 <!-- Seamless -->
                 <div class="feature-card">
                     <div class="icon-box">💬</div>
-                    <h3>Sømløs kommunikasjon</h3>
-                    <p>Meld interesse og start samtalen direkte i plattformen. Ingen friksjon, bare fremdrift.</p>
+                    <h3>Sømløs kontakt</h3>
+                    <p>Meld interesse og start samtalen direkte i plattformen. Ingen friksjon, bare fremdrift mot neste
+                        milepæl.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer / Final CTA -->
-    <footer style="padding: 100px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+    <!-- Final CTA -->
+    <footer>
         <div class="container">
-            <h2 style="color: #fff; margin-bottom: 24px;">Klar for å finne din partner?</h2>
-            <a href="signup.html" class="landing-btn btn-glow">Opprett din profil nå</a>
-            <p style="margin-top: 40px; font-size: 0.9rem;">&copy; 2024 CoFound. Alle rettigheter reservert.</p>
+            <div class="cta-box animate-fade-up">
+                <span class="section-tag" style="color: #8ab4f8;">Er du klar?</span>
+                <h2>Finn din partner i dag</h2>
+                <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                    <a href="signup.html" class="landing-btn btn-glow"
+                        style="background: white; color: #1a1f36 !important;">Opprett profil</a>
+                </div>
+            </div>
+            <p style="margin-top: 40px; font-size: 0.9rem; color: #5f6368;">&copy; 2024 CoFound. Bygget for det norske
+                gründer-økosystemet.</p>
         </div>
     </footer>
 
@@ -95,7 +112,17 @@
     <script src="theme.js"></script>
     <script src="data.js"></script>
     <script>
-        // Enkel sjekk: Hvis brukeren er logget inn, send dem rett til feed.html
+        // Nav scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('mainNav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Auth check
         document.addEventListener('DOMContentLoaded', async () => {
             const { data: { session } } = await db.auth.getSession();
             if (session) {
