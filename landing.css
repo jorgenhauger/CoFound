@@ -3,18 +3,25 @@
 :root {
     --landing-bg: #f8fafc;
     --primary-blue: #1a73e8;
-    --secondary-blue: #8ab4f8;
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.4);
-    --mesh-1: rgba(26, 115, 232, 0.08);
-    --mesh-2: rgba(234, 67, 53, 0.05);
+    --secondary-blue: #1557b0;
+    /* Darker blue for better contrast */
+    --glass-bg: rgba(255, 255, 255, 0.85);
+    /* Slightly more opaque */
+    --glass-border: rgba(0, 0, 0, 0.05);
+    /* Darker border for clarity */
+    --text-primary: #111827;
+    /* Near black for maximum contrast */
+    --text-secondary: #374151;
+    /* Dark grey for better readability */
+    --mesh-1: rgba(26, 115, 232, 0.12);
+    --mesh-2: rgba(234, 67, 53, 0.08);
     /* Soft reddish for warmth */
-    --mesh-3: rgba(66, 133, 244, 0.08);
+    --mesh-3: rgba(66, 133, 244, 0.12);
 }
 
 .landing-body {
     background-color: var(--landing-bg);
-    color: #1a1f36;
+    color: var(--text-primary);
     overflow-x: hidden;
     position: relative;
     /* Mesh Gradient Background */
@@ -50,6 +57,19 @@
     transition: all 0.3s ease;
 }
 
+.landing-nav .logo span {
+    color: var(--text-primary) !important;
+    /* Ensure logo is dark */
+}
+
+.landing-nav .nav-links a:not(.landing-btn) {
+    color: var(--text-secondary) !important;
+}
+
+.landing-nav .nav-links a:not(.landing-btn):hover {
+    color: var(--primary-blue) !important;
+}
+
 .landing-nav.scrolled {
     padding: 10px 0;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
@@ -75,11 +95,12 @@
     line-height: 1.05;
     margin-bottom: 24px;
     letter-spacing: -3px;
-    color: #1a1f36;
+    color: var(--text-primary);
 }
 
 .hero .gradient-text {
-    background: linear-gradient(135deg, #1a73e8 0%, #a0c3ff 100%);
+    background: linear-gradient(135deg, #1a73e8 0%, #004dc0 100%);
+    /* Sharper gradient for contrast */
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -88,7 +109,7 @@
 
 .hero p {
     font-size: 1.35rem;
-    color: #4f566b;
+    color: var(--text-secondary);
     max-width: 650px;
     margin: 0 auto 48px;
     line-height: 1.6;
@@ -209,11 +230,11 @@
     margin-bottom: 16px;
     font-size: 1.6rem;
     font-weight: 700;
-    color: #1a1f36;
+    color: var(--text-primary);
 }
 
 .feature-card p {
-    color: #4f566b;
+    color: var(--text-secondary);
     line-height: 1.6;
     font-size: 1.05rem;
     margin: 0;
@@ -272,6 +293,14 @@ footer {
     .hero h1 {
         font-size: 3.2rem;
         letter-spacing: -2px;
+        color: #000;
+        /* Force deep black on mobile for extreme clarity */
+    }
+
+    .hero p {
+        font-size: 1.15rem;
+        color: #1f2937;
+        /* Darker grey on mobile */
     }
 
     .hero {
