@@ -190,7 +190,7 @@ a:hover {
     background-color: var(--primary-color);
     color: white;
     padding: 10px 24px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-weight: 500;
     border: none;
     cursor: pointer;
@@ -213,7 +213,7 @@ a:hover {
     border: 1px solid var(--border-color);
     padding: 9px 23px;
     /* 1px less padding to account for border */
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -364,8 +364,7 @@ a:hover {
 .tag {
     background: var(--tag-bg);
     color: var(--text-secondary);
-    padding: 4px 12px;
-    border-radius: 16px;
+    border-radius: var(--radius-md);
     font-size: 0.85rem;
     font-weight: 500;
 }
@@ -638,7 +637,7 @@ button,
     background-color: var(--toast-bg);
     color: var(--background-color);
     padding: 12px 24px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     display: flex;
     align-items: center;
@@ -808,8 +807,8 @@ button,
     padding: 6px 16px;
     /* Litt bredere */
     font-size: 0.85rem;
-    border-radius: var(--radius-full);
-    /* Forsikre oss om at den er pilleformet */
+    border-radius: var(--radius-md);
+    /* Forsikre oss om at den er pilleformet - OPPDATERT TIL REKTANGULÆR */
 }
 
 /* Edit & Delete Buttons Group */
@@ -838,7 +837,7 @@ button,
     padding: 6px 12px;
     background-color: var(--primary-color);
     color: white;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-md);
     font-size: 0.85rem;
     font-weight: 500;
     cursor: pointer;
@@ -927,7 +926,7 @@ button,
     font-size: 0.7rem;
     font-weight: 600;
     padding: 2px 8px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
 }
 
 .message-time {
@@ -1015,7 +1014,7 @@ button,
     font-size: 0.7rem;
     font-weight: 600;
     padding: 2px 6px;
-    border-radius: var(--radius-full);
+    border-radius: var(--radius-sm);
     margin-left: 4px;
 }
 
@@ -1149,7 +1148,7 @@ button,
 #reply-input {
     flex: 1;
     border: 1px solid var(--border-color);
-    border-radius: 20px;
+    border-radius: var(--radius-md);
     padding: 10px 16px;
     resize: none;
     font-family: inherit;
@@ -1172,7 +1171,7 @@ button,
     width: 100%;
     padding: 10px 40px 10px 16px;
     border: 1px solid var(--border-color);
-    border-radius: 24px;
+    border-radius: var(--radius-md);
     background-color: var(--input-bg);
     font-size: 0.95rem;
     color: var(--text-main);
