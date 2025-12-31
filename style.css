@@ -505,6 +505,64 @@ a:hover {
     resize: vertical;
 }
 
+/* Bilde Preview i Form */
+.image-preview-wrapper {
+    position: relative;
+    display: inline-block;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    margin-top: 8px;
+    max-width: 100%;
+}
+
+.image-preview-wrapper img {
+    display: block;
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+.remove-image-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #ea4335;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+    transform: translateY(5px);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.image-preview-wrapper:hover .remove-image-btn {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.remove-image-btn:hover {
+    background-color: #ea4335;
+    color: white;
+    transform: scale(1.1);
+}
+
+[data-theme="dark"] .remove-image-btn {
+    background: rgba(45, 46, 49, 0.9);
+}
+
+[data-theme="dark"] .remove-image-btn:hover {
+    background-color: #ea4335;
+}
+
 .form-actions {
     display: flex;
     justify-content: flex-end;

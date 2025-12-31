@@ -2,6 +2,7 @@ const form = document.getElementById('create-post-form');
 const imageFileInput = document.getElementById('image-file');
 const imagePreviewContainer = document.getElementById('image-preview-container');
 const imagePreview = document.getElementById('image-preview');
+const removeImageBtn = document.getElementById('remove-image-btn');
 
 // Forhåndsvisning av bilde
 if (imageFileInput) {
@@ -14,9 +15,21 @@ if (imageFileInput) {
                 imagePreviewContainer.style.display = 'block';
             }
             reader.readAsDataURL(file);
-        } else {
-            imagePreviewContainer.style.display = 'none';
         }
+    });
+}
+
+// Slette bilde funksjonalitet
+if (removeImageBtn) {
+    removeImageBtn.addEventListener('click', () => {
+        // Tøm preview
+        imagePreview.src = '';
+        imagePreviewContainer.style.display = 'none';
+
+        // Tøm input-felter
+        imageFileInput.value = '';
+        const imageUrlField = document.getElementById('image-url');
+        if (imageUrlField) imageUrlField.value = '';
     });
 }
 
