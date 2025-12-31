@@ -58,6 +58,23 @@
                 <div class="form-group">
                     <label for="password">Passord</label>
                     <input type="password" id="password" placeholder="Minst 8 tegn" required>
+                    <div id="password-strength-container" style="margin-top: 8px; display: none;">
+                        <div style="display: flex; gap: 4px; height: 4px; margin-bottom: 5px;">
+                            <div class="strength-bar"
+                                style="flex: 1; height: 100%; border-radius: 2px; background: #e2e8f0; transition: all 0.3s ease;">
+                            </div>
+                            <div class="strength-bar"
+                                style="flex: 1; height: 100%; border-radius: 2px; background: #e2e8f0; transition: all 0.3s ease;">
+                            </div>
+                            <div class="strength-bar"
+                                style="flex: 1; height: 100%; border-radius: 2px; background: #e2e8f0; transition: all 0.3s ease;">
+                            </div>
+                            <div class="strength-bar"
+                                style="flex: 1; height: 100%; border-radius: 2px; background: #e2e8f0; transition: all 0.3s ease;">
+                            </div>
+                        </div>
+                        <span id="strength-text" style="font-size: 0.75rem; color: var(--text-secondary);"></span>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -80,6 +97,45 @@
     <script src="data.js"></script>
     <script src="auth.js"></script>
     <script>
+        const passwordInput = document.getElementById('password');
+        const strengthContainer = document.getElementById('password-strength-container');
+        const strengthBars = document.querySelectorAll('.strength-bar');
+        const strengthText = document.getElementById('strength-text');
+
+        passwordInput.addEventListener('input', () => {
+            const password = passwordInput.value;
+            if (password.length === 0) {
+                strengthContainer.style.display = 'none';
+                return;
+            }
+
+            strengthContainer.style.display = 'block';
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+
+            const config = [
+                { color: '#ef4444', text: 'Veldig svakt' },
+                { color: '#f59e0b', text: 'Svakt' },
+                { color: '#3b82f6', text: 'Middels' },
+                { color: '#10b981', text: 'Sterkt' }
+            ];
+
+            strengthBars.forEach((bar, index) => {
+                if (index < strength) {
+                    bar.style.background = config[strength - 1].color;
+                } else {
+                    bar.style.background = '#e2e8f0';
+                }
+            });
+
+            strengthText.innerText = config[strength - 1]?.text || 'Veldig svakt';
+            strengthText.style.color = config[strength - 1]?.color || '#ef4444';
+        });
+
         document.getElementById('signup-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const password = document.getElementById('password').value;

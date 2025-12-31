@@ -92,9 +92,9 @@
 .hero h1 {
     font-size: clamp(2.8rem, 8vw, 5rem);
     font-weight: 800;
-    line-height: 1.05;
+    line-height: 1.15;
     margin-bottom: 24px;
-    letter-spacing: -3px;
+    letter-spacing: -1.5px;
     color: var(--text-primary);
 }
 

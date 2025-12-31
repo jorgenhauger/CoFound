@@ -187,7 +187,7 @@ if (deleteAccountBtn) {
 
                 if (result.success) {
                     alert("Kontoen din er nå slettet. Takk for tiden din på CoFound.");
-                    window.location.href = 'index.html';
+                    await logoutUser(); // Logger ut og sender til login.html
                 } else {
                     alert("Noe gikk galt ved sletting: " + result.message);
                     deleteAccountBtn.innerText = "Slett min konto";

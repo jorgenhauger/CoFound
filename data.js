@@ -575,32 +575,52 @@ async function deleteCurrentUserAccount() {
     if (!user) return { success: false, message: "Ikke logget inn" };
 
     try {
-        // 1. Slett meldinger
-        await db.from('messages')
+        // 1. Slett meldinger (både sendte og mottatte)
+        const { error: msgError } = await db.from('messages')
             .delete()
             .or(`from_id.eq.${user.id},to_id.eq.${user.id}`);
 
+        if (msgError) {
+            console.error("Feil ved sletting av meldinger:", msgError);
+            return { success: false, message: "Kunne ikke slette meldinger: " + msgError.message };
+        }
+
         // 2. Slett favoritter
-        await db.from('favorites')
+        const { error: favError } = await db.from('favorites')
             .delete()
             .eq('user_id', user.id);
+
+        if (favError) {
+            console.error("Feil ved sletting av favoritter:", favError);
+            return { success: false, message: "Kunne ikke slette favoritter: " + favError.message };
+        }
 
         // 3. Slett innlegg
-        await db.from('posts')
+        const { error: postError } = await db.from('posts')
             .delete()
             .eq('user_id', user.id);
 
+        if (postError) {
+            console.error("Feil ved sletting av innlegg:", postError);
+            return { success: false, message: "Kunne ikke slette innlegg: " + postError.message };
+        }
+
         // 4. Slett profil
-        await db.from('profiles')
+        const { error: profileError } = await db.from('profiles')
             .delete()
             .eq('id', user.id);
 
-        // 5. Logg ut
-        await logoutUser();
+        if (profileError) {
+            console.error("Feil ved sletting av profil:", profileError);
+            return { success: false, message: "Kunne ikke slette profil: " + profileError.message };
+        }
+
+        // Merk: Vi sletter ikke selve auth-brukeren her, det krever Admin API / Edge Function.
+        // Men ved å slette profilen og logge ut, er kontoen i praksis borte fra plattformen.
 
         return { success: true };
     } catch (error) {
-        console.error("Feil ved sletting av konto:", error);
+        console.error("Uventet feil ved sletting av konto:", error);
         return { success: false, message: error.message };
     }
 }

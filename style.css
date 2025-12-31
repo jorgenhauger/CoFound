@@ -36,16 +36,18 @@
 }
 
 [data-theme="dark"] {
-    --primary-color: #8ab4f8;
-    --primary-hover: #aecbfa;
+    --primary-color: #669df6;
+    /* Slightly more vibrant blue for dark mode */
+    --primary-hover: #8ab4f8;
     --background-color: #121212;
     --surface-color: #1e1e1e;
     --text-main: #e8eaed;
     --text-secondary: #9aa0a6;
     --border-color: #3c4043;
     --input-bg: #2d2e31;
-    --card-hover-border: #5f6368;
-    --tag-bg: #3c4043;
+    --card-hover-border: #4a4d50;
+    --tag-bg: #2d2e31;
+    /* Darker tag bg */
     --toast-bg: #e8eaed;
 }
 
@@ -206,7 +208,7 @@ a:hover {
 }
 
 .btn-secondary {
-    background-color: white;
+    background-color: var(--surface-color);
     color: var(--primary-color);
     border: 1px solid var(--border-color);
     padding: 9px 23px;
@@ -222,8 +224,8 @@ a:hover {
 }
 
 .btn-secondary:hover {
-    background-color: #f8f9fa;
-    border-color: #dadce0;
+    background-color: var(--input-bg);
+    border-color: var(--card-hover-border);
 }
 
 .avatar-small {
@@ -425,13 +427,21 @@ a:hover {
 .role-badge.founder {
     background-color: #e8f0fe;
     color: #1967d2;
-    /* Google Blue */
+}
+
+[data-theme="dark"] .role-badge.founder {
+    background-color: #1a437e;
+    color: #d2e3fc;
 }
 
 .role-badge.co-founder {
     background-color: #fce8e6;
     color: #c5221f;
-    /* Google Red-ish */
+}
+
+[data-theme="dark"] .role-badge.co-founder {
+    background-color: #631211;
+    color: #fce8e6;
 }
 
 .profile-grid {
@@ -537,7 +547,7 @@ button,
 }
 
 .modal-content {
-    background-color: white;
+    background-color: var(--surface-color);
     padding: 32px;
     /* More breathing room */
     border-radius: 28px;
@@ -739,7 +749,7 @@ button,
     position: absolute;
     top: 20px;
     right: 20px;
-    background: white;
+    background: var(--surface-color);
     border: 1px solid #ffcccb;
     border-radius: 50%;
     width: 32px;
@@ -775,13 +785,13 @@ button,
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     margin-bottom: var(--spacing-sm);
-    background-color: #f8f9fa;
+    background-color: var(--input-bg);
     transition: all 0.2s;
 }
 
 .profile-post-item:hover {
     border-color: var(--primary-color);
-    background-color: white;
+    background-color: var(--surface-color);
 }
 
 .profile-post-content h4 {
@@ -852,13 +862,13 @@ button,
 }
 
 .skill-pill.available {
-    background-color: #f1f3f4;
+    background-color: var(--tag-bg);
     color: var(--text-secondary);
     border: 1px solid var(--border-color);
 }
 
 .skill-pill.available:hover {
-    background-color: #e8eaed;
+    background-color: var(--input-bg);
     color: var(--text-main);
     border-color: var(--primary-color);
 }
@@ -879,7 +889,7 @@ button,
 }
 
 .message-card {
-    background: white;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
@@ -893,7 +903,7 @@ button,
 }
 
 .message-card.unread {
-    background: #f8f9fa;
+    background: var(--input-bg);
     border-left: 4px solid var(--primary-color);
 }
 
@@ -949,7 +959,7 @@ button,
     position: absolute;
     top: 16px;
     right: 16px;
-    background: white;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: 50%;
     width: 36px;
@@ -985,7 +995,7 @@ button,
 
 .favorite-btn.active {
     border-color: #fce8e6;
-    background-color: #fff;
+    background-color: var(--surface-color);
 }
 
 .empty-state {
@@ -1011,7 +1021,7 @@ button,
 
 /* Chat Interface */
 .chat-container {
-    background: white;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
     display: flex;
@@ -1026,7 +1036,7 @@ button,
     display: flex;
     align-items: center;
     gap: var(--spacing-lg);
-    background: #fff;
+    background: var(--surface-color);
 }
 
 .back-link {
@@ -1053,7 +1063,7 @@ button,
     display: flex;
     flex-direction: column;
     gap: var(--spacing-md);
-    background: #f8f9fa;
+    background: var(--background-color);
 }
 
 .chat-bubble {
@@ -1088,7 +1098,7 @@ button,
 }
 
 .chat-bubble.received .bubble-content {
-    background: white;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     color: var(--text-main);
     border-bottom-left-radius: 4px;
@@ -1117,7 +1127,7 @@ button,
 
 /* Box for login / signup / create post */
 .auth-card {
-    background-color: white;
+    background-color: var(--surface-color);
     padding: 40px;
     border-radius: var(--radius-lg);
     box-shadow: var(--shadow-md);
@@ -1130,7 +1140,7 @@ button,
 .chat-input-area {
     padding: var(--spacing-md);
     border-top: 1px solid var(--border-color);
-    background: white;
+    background: var(--surface-color);
     display: flex;
     gap: var(--spacing-md);
     align-items: flex-end;
@@ -1163,8 +1173,9 @@ button,
     padding: 10px 40px 10px 16px;
     border: 1px solid var(--border-color);
     border-radius: 24px;
-    background-color: var(--background-color);
+    background-color: var(--input-bg);
     font-size: 0.95rem;
+    color: var(--text-main);
     transition: all 0.2s ease;
 }
 
@@ -1203,7 +1214,7 @@ button,
 
 /* Progress Bar */
 .profile-sidebar .profile-progress-widget {
-    background: #f8f9fa;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-md);
     padding: var(--spacing-md);
@@ -1213,7 +1224,7 @@ button,
 
 .progress-bar-bg {
     height: 8px;
-    background: #e2e8f0;
+    background: var(--tag-bg);
     border-radius: var(--radius-md);
     overflow: hidden;
     margin: var(--spacing-xs) 0;
@@ -1284,7 +1295,9 @@ button,
 
 .skeleton-text.short {
     width: 40%;
-}.skeleton-text.short {
+}
+
+.skeleton-text.short {
     width: 40%;
 }
 
@@ -1333,10 +1346,10 @@ button,
     border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
     background-color: var(--primary-color);
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
     transform: translateX(24px);
 }
