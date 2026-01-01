@@ -180,6 +180,12 @@
     box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.02);
 }
 
+.features h2,
+.features p {
+    color: var(--text-primary);
+    /* Force dark text even in dark mode */
+}
+
 .section-tag {
     color: var(--primary-blue);
     font-weight: 700;
