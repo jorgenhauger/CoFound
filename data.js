@@ -247,7 +247,7 @@ async function getCoFounders() {
         const { data, error } = await db
             .from('profiles')
             .select('*')
-            .eq('role', 'Co-founder'); // Vi henter bare de som har rollen Co-founder
+            .in('role', ['Co-founder', 'Cofounder', 'co-founder']); // Vi sjekker flere varianter for sikkerhets skyld
 
         if (error) {
             console.error("Feil ved henting av co-founders:", error);

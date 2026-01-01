@@ -74,11 +74,42 @@ async function getCurrentUserProfile() {
     if (!user) return null;
 
     // Hent utvidet info fra 'profiles' tabellen
-    const { data: profile, error } = await db
+    let { data: profile, error } = await db
         .from('profiles')
         .select('*')
         .eq('id', user.id)
         .single();
+
+    // SELF-HEALING: Hvis profil mangler (f.eks. trigger feilet), opprett den nå
+    if ((error && (error.code === 'PGRST116' || error.message.includes('JSON object requested, multiple (or no) rows returned'))) || (!profile && !error)) {
+        console.warn("Profil mangler i databasen for bruker " + user.id + ". Forsøker å reparere...");
+
+        const meta = user.user_metadata || {};
+        const newProfile = {
+            id: user.id,
+            email: user.email,
+            name: meta.name || user.email.split('@')[0] || 'Ukjent bruker',
+            role: meta.role || 'Founder', // Fallback
+            avatar: meta.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.id}`,
+            bio: '',
+            skills: [],
+            experience: []
+        };
+
+        const { data: insertedProfile, error: insertError } = await db
+            .from('profiles')
+            .insert([newProfile])
+            .select()
+            .single();
+
+        if (!insertError && insertedProfile) {
+            console.log("Profil reparert!", insertedProfile);
+            return insertedProfile;
+        } else {
+            console.error("Kunne ikke reparere profil:", insertError);
+            return null;
+        }
+    }
 
     if (error) {
         console.error("Kunne ikke hente profil:", error);
