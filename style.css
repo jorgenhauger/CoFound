@@ -149,7 +149,7 @@ a:hover {
 }
 
 .search-input {
-    padding: 8px 12px 8px 60px !important;
+    padding: 8px 12px 8px 40px !important;
     /* Space for icon */
     border: 1px solid var(--border-color);
     border-radius: var(--radius-full);
@@ -409,7 +409,8 @@ a:hover {
     display: flex;
     flex-wrap: wrap;
     /* Ensure tags don't push width */
-    gap: var(--spacing-sm);
+    gap: 12px;
+    /* Increased spacing */
     margin-top: var(--spacing-md);
 }
 
@@ -730,6 +731,12 @@ button,
     .main-layout,
     .profile-grid {
         grid-template-columns: 1fr;
+    }
+
+    .profile-actions {
+        flex-direction: column;
+        gap: 10px;
+        /* Add breathing room between buttons on mobile */
     }
 
     /* Reduce container padding on mobile for wider content */
@@ -1064,6 +1071,12 @@ button,
     /* Luft mellom rediger og slett */
 }
 
+.profile-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
 /* Skill Filter Pills */
 .skill-filter-container {
     margin-top: var(--spacing-md);
@@ -1072,7 +1085,8 @@ button,
 .active-filters {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: 12px;
+    /* Increased from 8px for more air */
     margin-bottom: var(--spacing-md);
 }
 
