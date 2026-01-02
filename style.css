@@ -779,6 +779,8 @@ button,
 
     /* Horizontal Scroll for Filters */
     .filter-options,
+    #category-filters,
+    /* Explicitly target ID to ensure it works on tab switch */
     .available-skills {
         display: flex;
         flex-wrap: nowrap !important;
@@ -1075,6 +1077,17 @@ button,
     display: flex;
     flex-wrap: wrap;
     gap: var(--spacing-sm);
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background-color: var(--tag-bg);
+    border-radius: var(--radius-full);
+    /* Make tags pill-shaped */
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
 }
 
 .skill-pill.available {

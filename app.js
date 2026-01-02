@@ -289,7 +289,12 @@ tabButtons.forEach(btn => {
 // --- CO-FOUNDER RENDERING ---
 function createCoFounderHTML(profile) {
     const skills = profile.skills || [];
-    const skillsHTML = skills.map(skill => `<span class="tag">${skill}</span>`).join('');
+    const MAX_VISIBLE_SKILLS = 5; // Limit to 5 skills on card
+    let skillsHTML = skills.slice(0, MAX_VISIBLE_SKILLS).map(skill => `<span class="tag">${skill}</span>`).join('');
+
+    if (skills.length > MAX_VISIBLE_SKILLS) {
+        skillsHTML += `<span class="tag more-tag" title="${skills.slice(MAX_VISIBLE_SKILLS).join(', ')}">+${skills.length - MAX_VISIBLE_SKILLS}</span>`;
+    }
 
     const isFav = myFavoriteUsers.includes(String(profile.id));
     const activeClass = isFav ? 'active' : '';
