@@ -734,8 +734,10 @@ button,
     }
 
     .profile-actions {
+        display: flex;
+        /* Required for gap/flex-direction to work */
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
         /* Add breathing room between buttons on mobile */
     }
 
@@ -1071,7 +1073,8 @@ button,
     /* Luft mellom rediger og slett */
 }
 
-.profile-skills {
+/* Target ID specifically as in HTML */
+#profile-skills {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
