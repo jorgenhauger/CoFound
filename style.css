@@ -385,6 +385,11 @@ a:hover {
     /* Prevent overly tall images */
     object-fit: cover;
     display: block;
+    /* Rigid feel improvements */
+    pointer-events: none;
+    /* Prevent dragging/interaction with img directly */
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .post-content h2 {
@@ -739,7 +744,6 @@ button,
         display: grid;
         grid-template-areas:
             "logo user"
-            "search search"
             "links links";
         grid-template-columns: 1fr auto;
         gap: 15px;
@@ -758,24 +762,31 @@ button,
     }
 
     .search-container {
-        grid-area: search;
+        /* Search is inside links, handled by flex there */
         width: 100%;
         margin: 0;
         display: block !important;
         /* Ensure visibility */
     }
 
-    .search-input {
-        width: 100%;
-    }
-
     .nav-links {
         grid-area: links;
         width: 100%;
+        display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
-        /* Spread links evenly */
         gap: 10px;
+    }
+
+    /* Force search to top row of links group */
+    .nav-links .search-container {
+        flex: 0 0 100%;
+    }
+
+    /* Buttons share the next row */
+    .nav-links .btn-primary,
+    .nav-links .btn-secondary {
+        flex: 1;
+        justify-content: center;
     }
 
     /* Chat Fixes for Mobile */
