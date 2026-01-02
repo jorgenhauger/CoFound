@@ -146,7 +146,8 @@ a:hover {
 }
 
 .search-input {
-    padding: 8px 12px 8px 36px;
+    padding: 8px 12px 8px 44px;
+    /* Increased padding-left to prevent overlap */
     /* Space for icon */
     border: 1px solid var(--border-color);
     border-radius: var(--radius-full);
@@ -724,40 +725,53 @@ button,
 
     /* Navbar Adjustment for Mobile */
     .nav-content {
-        flex-direction: column;
+        display: grid;
+        grid-template-areas:
+            "logo user"
+            "search search"
+            "links links";
+        grid-template-columns: 1fr auto;
         gap: 15px;
+        width: 100%;
     }
 
-    .nav-links {
-        width: 100%;
-        justify-content: space-between;
-        gap: 10px;
-        flex-wrap: wrap;
+    .logo {
+        grid-area: logo;
+    }
+
+    .user-menu {
+        grid-area: user;
+        position: static;
+        /* Remove absolute positioning */
+        justify-self: end;
     }
 
     .search-container {
-        order: 3;
-        /* Move search to bottom of nav on mobile */
+        grid-area: search;
         width: 100%;
-        margin-top: 10px;
+        margin: 0;
+        display: block !important;
+        /* Ensure visibility */
     }
 
     .search-input {
         width: 100%;
-        /* Full width search on mobile */
     }
 
-    .user-menu {
-        position: absolute;
-        /* Positioning hack for top right */
-        top: 15px;
-        right: 15px;
+    .nav-links {
+        grid-area: links;
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        /* Spread links evenly */
+        gap: 10px;
     }
 
+    /* Chat Fixes for Mobile */
     .chat-messages {
         padding: var(--spacing-md);
-        /* Less padding on mobile */
     }
+
 
     .chat-bubble {
         max-width: 85%;
@@ -1340,13 +1354,7 @@ button,
     gap: var(--spacing-md);
 }
 
-/* Mobile Search Adjustment */
-@media (max-width: 768px) {
-    .search-container {
-        display: none;
-        /* Hide on mobile for now, or move to separate row */
-    }
-}
+/* Removed: .search-container { display: none; } which was hiding search on mobile */
 
 /* Progress Bar */
 .profile-sidebar .profile-progress-widget {

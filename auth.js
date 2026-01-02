@@ -58,7 +58,11 @@ async function loginUser(email, password) {
 // Logg ut bruker
 async function logoutUser() {
     await db.auth.signOut();
-    localStorage.removeItem('cofound_user'); // Fjern lokal backup hvis vi har det
+    localStorage.removeItem('cofound_user');
+    localStorage.clear(); // Drastic but effective for this issue
+    sessionStorage.clear();
+
+    // Force reload to login page to ensure clean state
     window.location.href = 'login.html';
 }
 
