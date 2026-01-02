@@ -293,7 +293,15 @@ function createCoFounderHTML(profile) {
     let skillsHTML = skills.slice(0, MAX_VISIBLE_SKILLS).map(skill => `<span class="tag">${skill}</span>`).join('');
 
     if (skills.length > MAX_VISIBLE_SKILLS) {
-        skillsHTML += `<span class="tag more-tag" title="${skills.slice(MAX_VISIBLE_SKILLS).join(', ')}">+${skills.length - MAX_VISIBLE_SKILLS}</span>`;
+        // Escape name for usage in inline onclick
+        const safeName = profile.name.replace(/'/g, "\\'");
+        // Store skills as data attribute or pass them directly if simple array
+        // Parsing array in inline onclick is messy, better to use global lookup or just attach event listener? 
+        // Simplest for now: join and split, OR just pass comma separated string and split in function.
+        // Or better: Use encoded JSON
+        const skillsJson = JSON.stringify(skills).replace(/"/g, '&quot;');
+
+        skillsHTML += `<span class="tag more-tag" onclick="showSkillsModal('${safeName}', ${skillsJson})" style="cursor: pointer; background: var(--border-color); color: var(--text-main);">+${skills.length - MAX_VISIBLE_SKILLS}</span>`;
     }
 
     const isFav = myFavoriteUsers.includes(String(profile.id));

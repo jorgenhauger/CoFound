@@ -128,7 +128,35 @@ function showConfirmDialog(message, onConfirm) {
         if (e.target === modal) modal.remove();
     };
 }
+
+// Show Skills Modal
+function showSkillsModal(name, skills) {
+    const existing = document.getElementById('skills-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'skills-modal';
+    modal.className = 'modal show'; // Reuse existing modal styles
+
+    modal.innerHTML = `
+        <div class="modal-content" style="max-width: 400px; width: 90%;">
+            <span class="close" onclick="this.closest('.modal').remove()">&times;</span>
+            <h2 style="font-size: 1.25rem; margin-bottom: 20px;">Ferdigheter: ${escapeHTML(name)}</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                ${skills.map(skill => `<span class="tag" style="border-radius: 4px;">${escapeHTML(skill)}</span>`).join('')}
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Close on click outside
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+    };
+}
 window.showConfirmDialog = showConfirmDialog;
+window.showSkillsModal = showSkillsModal;
 
 // Delings-hjelper
 function sharePost(title, text, url) {
