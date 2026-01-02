@@ -618,8 +618,14 @@ async function deleteCurrentUserAccount() {
             return { success: false, message: "Kunne ikke slette profil: " + profileError.message };
         }
 
-        // Merk: Vi sletter ikke selve auth-brukeren her, det krever Admin API / Edge Function.
-        // Men ved å slette profilen og logge ut, er kontoen i praksis borte fra plattformen.
+        // 5. TILSLUTT: Slett selve auth-brukeren (via RPC funksjonen vi lagde)
+        // Dette hindrer at man kan logge inn igjen med samme e-post
+        const { error: rpcError } = await db.rpc('delete_own_user');
+
+        if (rpcError) {
+            console.warn("Advarsel: Kunne ikke slette auth-bruker (kanskje SQL-funksjonen mangler?)", rpcError);
+            // Vi fortsetter likevel, for profilen er slettet og brukeren logges ut.
+        }
 
         return { success: true };
     } catch (error) {
