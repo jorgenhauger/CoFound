@@ -64,6 +64,9 @@ body {
     color: var(--text-main);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll on mobile */
+    width: 100%;
 }
 
 /* Typography */
@@ -774,6 +777,7 @@ button,
         width: 100%;
         display: flex;
         flex-wrap: wrap;
+        /* Only wrap on mobile */
         gap: 10px;
     }
 
