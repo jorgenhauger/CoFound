@@ -402,25 +402,71 @@ function applySkillFilters() {
     }
 }
 
-// --- SØK ---
+// --- SØK (Robust & Case-Insensitive) ---
 const searchInput = document.getElementById('search-input');
-searchInput.addEventListener('input', (e) => {
-    const term = e.target.value.toLowerCase();
+
+function performSearch() {
+    const rawTerm = searchInput.value;
+    const term = rawTerm.toLowerCase().trim();
     const activeTab = document.querySelector('.tab-btn.active').dataset.tab;
 
+    if (term === '') {
+        // Hvis tomt søk, vis alt (respekter filtre hvis vi hadde det, men her resetter vi til "alt" for enkelhets skyld)
+        if (activeTab === 'projects') {
+            // TODO: Ideelt sett burde vi kalle applyFilters() her for å beholde kategorifiltre
+            // Men for nå resetter vi til allPosts
+            renderPosts(allPosts);
+        } else {
+            renderCoFoundersUI(); // Viser alle co-foundere
+        }
+        return;
+    }
+
     if (activeTab === 'projects') {
-        const result = allPosts.filter(p =>
-            p.title.toLowerCase().includes(term) ||
-            p.description.toLowerCase().includes(term) ||
-            (p.tags && p.tags.some(t => t.toLowerCase().includes(term)))
-        );
+        const result = allPosts.filter(p => {
+            // Sjekk alt: Tittel, Beskrivelse, Kategori, Tags, Forfatternavn, Forfatter-rolle
+            const matchTitle = p.title.toLowerCase().includes(term);
+            const matchDesc = p.description.toLowerCase().includes(term);
+            const matchCategory = p.category.toLowerCase().includes(term);
+            const matchAuthor = p.author.toLowerCase().includes(term);
+            const matchTags = p.tags && p.tags.some(t => t.toLowerCase().includes(term));
+
+            return matchTitle || matchDesc || matchCategory || matchAuthor || matchTags;
+        });
         renderPosts(result);
     } else {
-        const result = allCoFounders.filter(p =>
-            p.name.toLowerCase().includes(term) ||
-            (p.bio && p.bio.toLowerCase().includes(term))
-        );
+        // Co-founders tab
+        const result = allCoFounders.filter(p => {
+            // Sjekk: Navn, Bio, Rolle, Skills, Erfaring
+            const matchName = p.name.toLowerCase().includes(term);
+            const matchBio = (p.bio || '').toLowerCase().includes(term);
+            const matchRole = (p.role || '').toLowerCase().includes(term);
+            const matchSkills = p.skills && p.skills.some(s => s.toLowerCase().includes(term));
+
+            // Sjekk erfaring (litt mer kompleks struktur)
+            const matchExp = p.experience && p.experience.some(exp =>
+                (exp.role && exp.role.toLowerCase().includes(term)) ||
+                (exp.company && exp.company.toLowerCase().includes(term))
+            );
+
+            return matchName || matchBio || matchRole || matchSkills || matchExp;
+        });
+
         const cofounderFeed = document.getElementById('cofounder-feed');
-        cofounderFeed.innerHTML = result.length ? result.map(cf => createCoFounderHTML(cf)).join('') : '<p style="text-align: center; padding: 20px;">Ingen treff.</p>';
+        if (result.length > 0) {
+            cofounderFeed.innerHTML = result.map(cf => createCoFounderHTML(cf)).join('');
+        } else {
+            cofounderFeed.innerHTML = '<p style="text-align: center; padding: 20px;">Ingen treff på profiler eller ferdigheter.</p>';
+        }
+    }
+}
+
+// Kjør søk på input (med debounce hvis vi vil, men her kjører vi direkte for responsivitet)
+searchInput.addEventListener('input', performSearch);
+
+// Lytte på enter også for å lukke tastatur på mobil
+searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') {
+        searchInput.blur();
     }
 });

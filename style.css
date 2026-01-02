@@ -140,6 +140,43 @@ a:hover {
     z-index: 100;
 }
 
+.search-container {
+    position: relative;
+    margin-right: var(--spacing-md);
+}
+
+.search-input {
+    padding: 8px 12px 8px 36px;
+    /* Space for icon */
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-full);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    width: 250px;
+    transition: all 0.2s;
+    background-color: var(--tag-bg);
+}
+
+.search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    background-color: var(--surface-color);
+    width: 300px;
+    /* Expand on focus */
+    box-shadow: var(--shadow-sm);
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    fill: var(--text-secondary);
+    pointer-events: none;
+}
+
 .nav-content {
     display: flex;
     justify-content: space-between;
@@ -683,6 +720,48 @@ button,
     .filter-card {
         position: static;
         margin-bottom: var(--spacing-lg);
+    }
+
+    /* Navbar Adjustment for Mobile */
+    .nav-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .search-container {
+        order: 3;
+        /* Move search to bottom of nav on mobile */
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .search-input {
+        width: 100%;
+        /* Full width search on mobile */
+    }
+
+    .user-menu {
+        position: absolute;
+        /* Positioning hack for top right */
+        top: 15px;
+        right: 15px;
+    }
+
+    .chat-messages {
+        padding: var(--spacing-md);
+        /* Less padding on mobile */
+    }
+
+    .chat-bubble {
+        max-width: 85%;
+        /* Wider bubbles on mobile */
     }
 }
 

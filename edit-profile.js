@@ -12,6 +12,7 @@ const linkedinInput = document.getElementById('linkedin');
 const skillsInput = document.getElementById('skills');
 const experienceContainer = document.getElementById('experience-container');
 const addExperienceBtn = document.getElementById('add-experience-btn');
+const publicToggle = document.getElementById('public-toggle'); // Privacy toggle
 
 // Global user var for update
 let currentUserRef = null;
@@ -79,6 +80,12 @@ async function loadFormData() {
     if (bioInput) bioInput.value = user.bio || '';
     if (linkedinInput) linkedinInput.value = user.linkedin || "";
     if (skillsInput) skillsInput.value = (user.skills || []).join(', ');
+
+    // Set privacy toggle
+    if (publicToggle) {
+        // Default to true if undefined (legacy users)
+        publicToggle.checked = (user.is_public !== false);
+    }
 
     // Last inn erfaringer
     if (experienceContainer) {
@@ -150,7 +157,8 @@ form.addEventListener('submit', async (e) => {
         bio: bioInput.value,
         linkedin: linkedinInput ? linkedinInput.value : null,
         skills: skillsInput.value.split(',').map(s => s.trim()).filter(s => s !== ''),
-        experience: newExperience
+        experience: newExperience,
+        is_public: publicToggle ? publicToggle.checked : true
     };
 
     submitBtn.innerText = "Lagrer profil...";

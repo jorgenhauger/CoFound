@@ -58,11 +58,24 @@ document.addEventListener('DOMContentLoaded', async () => {
                 // Parse timestamp
                 const timeStr = new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+                // Read receipt logic
+                let readStatusHTML = '';
+                if (isMe) {
+                    const isRead = msg.read; // msg.read comes from data.js
+                    const statusIcon = isRead ? '✓✓' : '✓';
+                    const statusColor = isRead ? '#4caf50' : 'rgba(255,255,255,0.7)'; // Green for read
+                    readStatusHTML = `<span class="read-status" style="font-size: 0.7rem; margin-left: 4px; color: ${statusColor};">${statusIcon}</span>`;
+                }
+
                 messageEl.innerHTML = `
                     <div class="bubble-content">
-                        ${msg.postTitle ? `<div class="bubble-context">📌 ${escapeHTML(msg.postTitle)}</div>` : ''}
-                        <p>${escapeHTML(msg.message)}</p>
-                        <span class="bubble-time">${timeStr}</span>
+                        ${msg.postTitle ? `<div class="bubble-context">Angående: ${escapeHTML(msg.postTitle)}</div>` : ''}
+                        <p>
+                            ${escapeHTML(msg.message)}
+                        </p>
+                        <span class="bubble-time">
+                            ${timeStr} ${readStatusHTML}
+                        </span>
                     </div>
                 `;
 

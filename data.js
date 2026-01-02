@@ -242,12 +242,14 @@ async function deletePost(postId) {
 // --- PROFILSØK (CO-FOUNDERS) ---
 
 // Hent co-foundere (filtrer evt på skills senere)
+// UPDATED: Nå filtrerer vi også på is_public = true
 async function getCoFounders() {
     try {
         const { data, error } = await db
             .from('profiles')
             .select('*')
-            .in('role', ['Co-founder', 'Cofounder', 'co-founder']); // Vi sjekker flere varianter for sikkerhets skyld
+            .in('role', ['Co-founder', 'Cofounder', 'co-founder'])
+            .eq('is_public', true); // KUN OFFENTLIGE PROFILER
 
         if (error) {
             console.error("Feil ved henting av co-founders:", error);
@@ -415,7 +417,8 @@ async function updateUserProfile(profileData) {
                 bio: profileData.bio,
                 skills: profileData.skills, // Array
                 experience: profileData.experience, // JSON
-                linkedin: profileData.linkedin
+                linkedin: profileData.linkedin,
+                is_public: profileData.is_public // Boolean
             })
             .eq('id', user.id);
 
