@@ -776,6 +776,43 @@ button,
         max-width: 85%;
         /* Wider bubbles on mobile */
     }
+
+    /* Horizontal Scroll for Filters */
+    .filter-options,
+    .available-skills {
+        display: flex;
+        flex-wrap: nowrap !important;
+        /* Force single line */
+        overflow-x: auto;
+        padding-bottom: 12px;
+        /* Space for scroll / touch */
+        gap: 10px;
+        -webkit-overflow-scrolling: touch;
+        /* Smooth scroll iOS */
+        mask-image: linear-gradient(to right, black 90%, transparent 100%);
+        /* Fade out end */
+    }
+
+    /* Adjust labels to look like chips/buttons in horizontal scroll */
+    .filter-option {
+        flex: 0 0 auto;
+        /* Don't shrink */
+        background: var(--surface-color);
+        border: 1px solid var(--border-color);
+        padding: 8px 16px;
+        border-radius: 20px;
+        margin-bottom: 0;
+        /* Remove vertical spacing */
+        white-space: nowrap;
+    }
+
+    /* Ensure chips look good */
+    .skill-pill,
+    .skill-pill.available {
+        flex: 0 0 auto;
+        margin-bottom: 0;
+        white-space: nowrap;
+    }
 }
 
 /* Toast Notifications */
