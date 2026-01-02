@@ -93,6 +93,43 @@ window.escapeHTML = escapeHTML;
 window.calculateProfileCompleteness = calculateProfileCompleteness;
 window.triggerConfetti = triggerConfetti;
 
+// Custom Confirmation Modal
+function showConfirmDialog(message, onConfirm) {
+    // Remove existing if any
+    const existing = document.getElementById('confirm-modal');
+    if (existing) existing.remove();
+
+    const modal = document.createElement('div');
+    modal.id = 'confirm-modal';
+    modal.className = 'modal show'; // Reuse existing modal styles
+
+    modal.innerHTML = `
+        <div class="modal-content" style="text-align: center; max-width: 400px;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 10px;">Bekreft handling</h2>
+            <p style="margin-bottom: 20px;">${escapeHTML(message)}</p>
+            <div style="display: flex; gap: 10px; justify-content: center;">
+                <button id="confirm-cancel" class="btn-secondary">Avbryt</button>
+                <button id="confirm-yes" class="btn-primary" style="background-color: #ea4335; border-color: #ea4335;">Slett</button>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+
+    // Event listeners
+    document.getElementById('confirm-cancel').onclick = () => modal.remove();
+    document.getElementById('confirm-yes').onclick = () => {
+        modal.remove();
+        onConfirm();
+    };
+
+    // Close on click outside
+    modal.onclick = (e) => {
+        if (e.target === modal) modal.remove();
+    };
+}
+window.showConfirmDialog = showConfirmDialog;
+
 // Delings-hjelper
 function sharePost(title, text, url) {
     if (navigator.share) {

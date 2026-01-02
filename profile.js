@@ -224,8 +224,8 @@ async function loadProfile() {
 }
 
 // Slettefunksjon for profil (kun mine innlegg)
-window.deleteProfilePost = async function (postId) {
-    if (confirm("Er du sikker på at du vil slette dette innlegget?")) {
+window.deleteProfilePost = function (postId) {
+    showConfirmDialog("Er du sikker på at du vil slette dette innlegget?", async () => {
         const result = await deletePost(postId);
         if (result.success) {
             showToast("Innlegg slettet", "success");
@@ -234,7 +234,7 @@ window.deleteProfilePost = async function (postId) {
         } else {
             showToast(result.message, "error");
         }
-    }
+    });
 }
 
 // Last inn profilen når siden er klar
