@@ -785,25 +785,55 @@ button,
         /* Force single line */
         overflow-x: auto;
         padding-bottom: 12px;
-        /* Space for scroll / touch */
         gap: 10px;
         -webkit-overflow-scrolling: touch;
-        /* Smooth scroll iOS */
         mask-image: linear-gradient(to right, black 90%, transparent 100%);
-        /* Fade out end */
+
+        /* Fixes infinite scroll issue */
+        width: 100%;
+        max-width: 100vw;
+        box-sizing: border-box;
     }
 
-    /* Adjust labels to look like chips/buttons in horizontal scroll */
+    /* Adjust category labels (checkboxes) to look like chips */
     .filter-option {
         flex: 0 0 auto;
-        /* Don't shrink */
+        margin-bottom: 0;
         background: var(--surface-color);
         border: 1px solid var(--border-color);
-        padding: 8px 16px;
         border-radius: 20px;
-        margin-bottom: 0;
-        /* Remove vertical spacing */
-        white-space: nowrap;
+        padding: 0;
+        /* Clear padding on label container */
+        overflow: hidden;
+        /* Ensure radius clips content */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Hide the actual checkbox input but keep accessible */
+    .filter-option input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Style the span inside the label to look like the button content */
+    .filter-option span {
+        padding: 8px 16px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        display: block;
+        transition: all 0.2s;
+    }
+
+    /* Checked state styling for chips */
+    .filter-option input[type="checkbox"]:checked+span {
+        background-color: var(--primary-color);
+        color: white;
     }
 
     /* Ensure chips look good */
