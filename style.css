@@ -146,7 +146,7 @@ a:hover {
 }
 
 .search-input {
-    padding: 8px 12px 8px 50px;
+    padding: 8px 12px 8px 60px !important;
     /* Space for icon */
     border: 1px solid var(--border-color);
     border-radius: var(--radius-full);
