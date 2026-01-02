@@ -264,21 +264,21 @@ tabButtons.forEach(btn => {
         } else if (tab === 'cofounders') {
             projectsSection.style.display = 'none';
             cofoundersSection.style.display = 'block';
-            renderCoFoundersUI(); // Render co-founders when tab is clicked
+            renderCoFoundersUI();
         }
 
-        // Vis/Skjul filtre (enkelt bytte)
+        // Vis/Skjul filtre
         const categoryFilters = document.getElementById('category-filters');
         const skillFilters = document.getElementById('skill-filters');
         const filterTitle = document.getElementById('filter-title');
 
         if (tab === 'projects') {
-            categoryFilters.style.display = 'block';
+            categoryFilters.style.display = ''; // Reset to CSS default (flex on mobile, block on desktop)
             if (skillFilters) skillFilters.style.display = 'none';
             if (filterTitle) filterTitle.textContent = 'Filtrer etter kategori';
         } else if (tab === 'cofounders') {
             categoryFilters.style.display = 'none';
-            if (skillFilters) skillFilters.style.display = 'block';
+            if (skillFilters) skillFilters.style.display = ''; // Reset to CSS default
             if (filterTitle) filterTitle.textContent = 'Filtrer etter ferdigheter';
             renderSkillFilters();
         }

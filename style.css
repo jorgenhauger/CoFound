@@ -724,6 +724,11 @@ button,
         grid-template-columns: 1fr;
     }
 
+    /* Reduce container padding on mobile for wider content */
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
     .filter-card {
         position: static;
         margin-bottom: var(--spacing-lg);
