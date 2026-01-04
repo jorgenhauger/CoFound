@@ -601,7 +601,6 @@ a:hover {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
-    /* Focus ring */
 }
 
 .form-group textarea {

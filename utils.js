@@ -116,9 +116,19 @@ function updateThemeIcon() {
 
 // Run init on load
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initTheme);
+    document.addEventListener('DOMContentLoaded', () => {
+        initTheme();
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', toggleTheme);
+        }
+    });
 } else {
     initTheme();
+    const toggleBtn = document.getElementById('theme-toggle');
+    if (toggleBtn) {
+        toggleBtn.addEventListener('click', toggleTheme);
+    }
 }
 
 // Expose globally
