@@ -874,12 +874,37 @@ button,
         flex: 0 0 100%;
     }
 
-    /* Buttons share the next row */
-    .nav-links .btn-primary,
-    .nav-links .btn-secondary {
-        /* Hide desktop buttons on mobile if we have bottom nav */
-        /* But keep "New Post" maybe? Or move it to bottom nav FAB */
-        display: none;
+    /* Hide entire nav-links container on mobile (removes "Meldinger" and "Opprett innlegg") */
+    .nav-links {
+        display: none !important;
+    }
+
+    /* Hide top profile text link on mobile */
+    .user-menu>div>a {
+        display: none !important;
+    }
+
+    /* Center profile grid items on mobile */
+    .profile-grid {
+        display: flex;
+        /* Switch to flex column for perfect stacking */
+        flex-direction: column;
+        align-items: center;
+        /* Center items */
+        gap: 20px;
+    }
+
+    /* Empty State Dark Mode Fix */
+    .empty-state {
+        background-color: var(--surface-color) !important;
+        color: var(--text-color) !important;
+        border-color: var(--border-color) !important;
+    }
+
+    /* Ensure text inside empty state is readable */
+    .empty-state h2,
+    .empty-state p {
+        color: var(--text-color) !important;
     }
 
     /* Show Bottom Nav on Mobile */
