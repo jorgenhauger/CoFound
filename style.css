@@ -881,14 +881,43 @@ button,
         display: none !important;
     }
 
+    /* UN-Hide the Favorites Heart on mobile */
+    .user-menu>div>a[href="favorites.html"] {
+        display: flex !important;
+        margin-left: 0 !important;
+        /* Reset margin */
+        padding: 5px;
+    }
+
     /* Center profile grid items on mobile */
     .profile-grid {
         display: flex;
-        /* Switch to flex column for perfect stacking */
         flex-direction: column;
         align-items: center;
-        /* Center items */
         gap: 20px;
+        width: 100%;
+        /* Ensure full width */
+    }
+
+    /* Feed Layout Fixes */
+    #feed,
+    #cofounder-feed {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+        /* Remove potential default padding */
+        gap: 20px;
+    }
+
+    /* Ensure no weird margins on cards in feed */
+    #feed .post-card,
+    #cofounder-feed .profile-card {
+        margin: 0 !important;
+        /* Force zero margin everywhere */
+        width: 100% !important;
+        max-width: 100%;
     }
 
     /* Empty State Dark Mode Fix */
