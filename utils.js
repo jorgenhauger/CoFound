@@ -90,6 +90,16 @@ function triggerConfetti() {
 function initTheme() {
     const savedTheme = localStorage.getItem('theme');
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const path = window.location.pathname;
+
+    // Force Light Mode on public pages
+    // Checks for root (/), index.html, login.html, signup.html, etc.
+    const isPublicPage = path === '/' || path.endsWith('index.html') || path.endsWith('login.html') || path.endsWith('signup.html') || path.endsWith('forgot-password.html') || path.endsWith('reset-password.html');
+
+    if (isPublicPage) {
+        document.body.classList.remove('dark-mode');
+        return; // Stop here, do not apply dark mode
+    }
 
     if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
         document.body.classList.add('dark-mode');

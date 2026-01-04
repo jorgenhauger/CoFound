@@ -969,7 +969,8 @@ button,
         margin-bottom: 16px;
         /* Fix right alignment / cut-off by ensuring it spans full width */
         width: 100%;
-        max-width: 100vw;
+        max-width: 100%;
+        /* Changed from 100vw to prevent overflow caused by parent padding */
         padding-left: 4px;
         /* Slight offset to prevent left-edge cut-off */
     }
