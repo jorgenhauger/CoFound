@@ -2,6 +2,7 @@
 const form = document.getElementById('edit-profile-form');
 const nameInput = document.getElementById('name');
 const roleInput = document.getElementById('role');
+const statusInput = document.getElementById('status'); // Nytt felt
 // const avatarInput = document.getElementById('avatar'); // Byttet ut med filopplasting
 const avatarUrlInput = document.getElementById('avatar-url'); // Skjult felt
 const avatarFileInput = document.getElementById('avatar-file'); // Filvelger
@@ -71,6 +72,7 @@ async function loadFormData() {
 
     if (nameInput) nameInput.value = user.name || '';
     if (roleInput) roleInput.value = user.role || 'Founder';
+    if (statusInput) statusInput.value = user.status || 'Aktivt søkende'; // Default status
 
     // Sett avatar info
     const currentAvatar = user.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=' + (user.name || 'Guest');
@@ -153,6 +155,7 @@ form.addEventListener('submit', async (e) => {
     const updatedProfile = {
         name: nameInput.value,
         role: roleInput.value,
+        status: statusInput.value, // Send med status
         avatar: finalAvatarUrl, // Bruk den nye URL-en
         bio: bioInput.value,
         linkedin: linkedinInput ? linkedinInput.value : null,

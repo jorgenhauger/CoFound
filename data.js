@@ -413,6 +413,7 @@ async function updateUserProfile(profileData) {
             .update({
                 name: profileData.name,
                 role: profileData.role,
+                status: profileData.status, // Ny
                 avatar: profileData.avatar,
                 bio: profileData.bio,
                 skills: profileData.skills, // Array

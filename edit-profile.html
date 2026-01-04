@@ -51,6 +51,23 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="status">Status</label>
+                        <div class="custom-select-wrapper" style="position: relative;">
+                            <select id="status" class="form-select"
+                                style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; background-color: var(--card-bg); color: var(--text-main); appearance: none; -webkit-appearance: none; cursor: pointer;">
+                                <option value="Aktivt søkende">🟢 Aktivt søkende</option>
+                                <option value="Åpen for kaffe">🟡 Åpen for kaffe</option>
+                                <option value="Ikke søkende">🔴 Ikke søkende</option>
+                            </select>
+                            <div
+                                style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary);">
+                                ▼</div>
+                        </div>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 5px;">Dette vises på
+                            profilkortet ditt.</p>
+                    </div>
+
+                    <div class="form-group">
                         <label for="avatar-file">Profilbilde</label>
                         <div style="display: flex; align-items: center; gap: 20px;">
                             <img id="avatar-preview" src="" alt="Forhåndsvisning" class="avatar-small"

@@ -49,13 +49,18 @@ async function loadProfile() {
     if (profileAvatar) profileAvatar.src = profileToLoad.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guest';
     if (profileName) profileName.textContent = profileToLoad.name;
 
-    // Vis rolle med badge
+    // Vis rolle med STATUS badge
     if (profileRole) {
-        const roleClass = profileToLoad.role === 'Founder' ? 'founder' : 'co-founder';
-        const roleNorwegian = profileToLoad.role === 'Founder' ? 'Idéhaver' : 'Bidragsyter';
+        // Vi viser fortsatt rollen tekstlig (f.eks "Founder"), men badgen viser nå STATUS
+        const status = profileToLoad.status || 'Aktivt søkende'; // Default
+
+        let statusClass = 'status-green';
+        if (status.includes('Åpen')) statusClass = 'status-yellow';
+        if (status.includes('Ikke')) statusClass = 'status-red';
+
         profileRole.innerHTML = `
-            ${escapeHTML(profileToLoad.role)} 
-            <span class="role-badge ${roleClass}">${roleNorwegian}</span>
+            ${escapeHTML(profileToLoad.role || 'Bruker')} 
+            <span class="status-badge ${statusClass}">${escapeHTML(status)}</span>
         `;
     }
 

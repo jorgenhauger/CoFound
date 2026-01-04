@@ -496,6 +496,55 @@ a:hover {
     color: #fce8e6;
 }
 
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: none; /* Keep natural case */
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+}
+
+.status-green {
+    background-color: #ecfdf5;
+    color: #047857;
+    border: 1px solid #a7f3d0;
+}
+
+.status-yellow {
+    background-color: #fffbeb;
+    color: #b45309;
+    border: 1px solid #fde68a;
+}
+
+.status-red {
+    background-color: #fef2f2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+/* Dark Mode Status Badges */
+[data-theme="dark"] .status-green {
+    background-color: #064e3b;
+    color: #d1fae5;
+    border-color: #065f46;
+}
+
+[data-theme="dark"] .status-yellow {
+    background-color: #78350f;
+    color: #fef3c7;
+    border-color: #92400e;
+}
+
+[data-theme="dark"] .status-red {
+    background-color: #7f1d1d;
+    color: #fee2e2;
+    border-color: #991b1b;
+}
+
 .profile-grid {
     display: grid;
     grid-template-columns: 1fr 2fr;

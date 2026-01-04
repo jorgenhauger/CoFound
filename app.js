@@ -319,7 +319,13 @@ function createCoFounderHTML(profile) {
                     <img src="${profile.avatar || 'https://api.dicebear.com/7.x/avataaars/svg?seed=Guest'}" alt="${escapeHTML(profile.name)}" class="post-avatar">
                     <div class="post-author">
                         <h3 style="color: var(--text-main); margin: 0; transition: color 0.2s;">${escapeHTML(profile.name)}</h3>
-                        <span class="role-badge ${profile.role === 'Founder' ? 'founder' : 'co-founder'}">${escapeHTML(profile.role)}</span>
+                        ${(() => {
+            const status = profile.status || 'Aktivt søkende';
+            let statusClass = 'status-green';
+            if (status.includes('Åpen')) statusClass = 'status-yellow';
+            if (status.includes('Ikke')) statusClass = 'status-red';
+            return `<span class="status-badge ${statusClass}" style="margin-left:8px; font-size:0.75rem;">${escapeHTML(status)}</span>`;
+        })()}
                     </div>
                 </a>
             </div>
