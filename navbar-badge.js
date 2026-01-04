@@ -5,17 +5,25 @@ window.updateNavbarBadge = async function () {
     if (!navbarUnreadBadge) return;
 
     // Use our new data.js function
-    // Note: getUnreadMessageCount checks for session internally
     const unreadCount = await getUnreadMessageCount();
 
-    if (unreadCount > 0) {
-        navbarUnreadBadge.textContent = unreadCount;
-        navbarUnreadBadge.style.display = 'inline-block';
-        navbarUnreadBadge.classList.add('pulse'); // Optional: Add CSS animation
-    } else {
-        navbarUnreadBadge.style.display = 'none';
-        navbarUnreadBadge.classList.remove('pulse');
-    }
+    const badges = [
+        document.getElementById('navbar-unread-badge'),
+        document.getElementById('bottom-nav-badge')
+    ];
+
+    badges.forEach(badge => {
+        if (!badge) return;
+
+        if (unreadCount > 0) {
+            badge.textContent = unreadCount;
+            badge.style.display = 'flex'; // Flex for centering (was inline-block)
+            badge.classList.add('pulse');
+        } else {
+            badge.style.display = 'none';
+            badge.classList.remove('pulse');
+        }
+    });
 };
 
 // Run on load and every 60 seconds (long polling to avoid spamming DB)
