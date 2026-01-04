@@ -58,9 +58,18 @@ async function loginUser(email, password) {
 // Logg ut bruker
 async function logoutUser() {
     await db.auth.signOut();
-    localStorage.removeItem('cofound_user');
-    localStorage.clear(); // Drastic but effective for this issue
+
+    // Ta vare på tema-innstillingen før vi tømmer
+    const currentTheme = localStorage.getItem('theme');
+
+    // Tøm alt
+    localStorage.clear();
     sessionStorage.clear();
+
+    // Legg tilbake temaet hvis det fantes
+    if (currentTheme) {
+        localStorage.setItem('theme', currentTheme);
+    }
 
     // Force reload to login page to ensure clean state
     window.location.href = 'login.html';

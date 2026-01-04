@@ -903,19 +903,18 @@ button,
     #feed,
     #cofounder-feed {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        display: block;
+        /* Endret fra flex for å unngå sentrerings-tull */
         padding: 0;
         /* Remove potential default padding */
-        gap: 20px;
+        /* gap fungerer ikke med display: block, men vi har margin-bottom på kortene */
     }
 
     /* Ensure no weird margins on cards in feed */
     #feed .post-card,
     #cofounder-feed .profile-card {
-        margin: 0 !important;
-        /* Force zero margin everywhere */
+        margin: 0 0 24px 0 !important;
+        /* Force zero horizontal margin, but keep bottom */
         width: 100% !important;
         max-width: 100%;
     }
