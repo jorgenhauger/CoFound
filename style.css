@@ -854,8 +854,10 @@ button,
     }
 
     /* Show Bottom Nav on Mobile */
+    /* Show Bottom Nav on Mobile */
     .bottom-nav {
-        display: flex;
+        display: flex !important;
+        z-index: 9999;
     }
 
     /* Adjust main content padding for bottom nav */
