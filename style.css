@@ -823,7 +823,7 @@ button,
     .filter-card {
         position: static;
         margin-bottom: var(--spacing-lg);
-        max-width: 100vw;
+        max-width: 100%;
         /* Ensure filters don't push width */
     }
 
