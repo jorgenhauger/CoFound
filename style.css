@@ -3,7 +3,8 @@
     --primary-color: #1a73e8;
     /* Google Blue */
     --primary-hover: #1557b0;
-    --background-color: #ffffff;
+    --background-color: #f8fafc;
+    /* Changed to Light Blue */
     --surface-color: #ffffff;
     --text-main: #202124;
     /* Google Dark Grey */
@@ -794,11 +795,23 @@ button,
     /* Reduce container padding on mobile for wider content */
     .container {
         padding: 0 var(--spacing-md);
+        width: 100%;
+        max-width: 100vw;
+        /* Crucial for preventing overflow */
+        box-sizing: border-box;
+    }
+
+    /* Prevent body overflow */
+    body {
+        max-width: 100vw;
+        overflow-x: hidden;
     }
 
     .filter-card {
         position: static;
         margin-bottom: var(--spacing-lg);
+        max-width: 100vw;
+        /* Ensure filters don't push width */
     }
 
     /* Navbar Adjustment for Mobile */

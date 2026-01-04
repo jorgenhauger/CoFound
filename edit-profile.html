@@ -46,8 +46,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="role">Rolle / Tittel</label>
-                        <input type="text" id="role" placeholder="F.eks. Founder, Utvikler, Student" required>
+                        <label for="role">Jeg er en...</label>
+                        <div class="custom-select-wrapper" style="position: relative;">
+                            <select id="role" class="form-select"
+                                style="width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.95rem; background-color: var(--card-bg); color: var(--text-main); appearance: none; -webkit-appearance: none; cursor: pointer;"
+                                required>
+                                <option value="Founder">Founder (Jeg har en idé)</option>
+                                <option value="Co-founder">Co-founder (Jeg vil bli med på noe)</option>
+                            </select>
+                            <div
+                                style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--text-secondary);">
+                                ▼</div>
+                        </div>
                     </div>
 
                     <div class="form-group">
