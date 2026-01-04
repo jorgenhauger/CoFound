@@ -241,18 +241,18 @@ async function deletePost(postId) {
 
 // --- PROFILSØK (CO-FOUNDERS) ---
 
-// Hent co-foundere (filtrer evt på skills senere)
-// UPDATED: Nå filtrerer vi også på is_public = true
-async function getCoFounders() {
+// Hent ALLE offentlige profiler (både Foundere og Co-foundere)
+// Vi filtrerer heller i frontend
+async function getAllProfiles() {
     try {
         const { data, error } = await db
             .from('profiles')
             .select('*')
-            .in('role', ['Co-founder', 'Cofounder', 'co-founder'])
-            .eq('is_public', true); // KUN OFFENTLIGE PROFILER
+            .eq('is_public', true)
+            .order('created_at', { ascending: false }); // Nyeste først
 
         if (error) {
-            console.error("Feil ved henting av co-founders:", error);
+            console.error("Feil ved henting av profiler:", error);
             return [];
         }
         return data;
@@ -397,6 +397,26 @@ async function getMyMessages() {
     } catch (err) {
         console.error("Feil ved henting av meldinger", err);
         return [];
+    }
+}
+
+// Hent antall uleste meldinger (for varsling)
+async function getUnreadMessageCount() {
+    const user = await getSessionUser();
+    if (!user) return 0;
+
+    try {
+        const { count, error } = await db
+            .from('messages')
+            .select('*', { count: 'exact', head: true }) // head: true betyr at vi bare henter antallet, ikke dataen
+            .eq('to_id', user.id)
+            .eq('is_read', false);
+
+        if (error) throw error;
+        return count || 0;
+    } catch (err) {
+        console.error("Kunne ikke hente antall uleste:", err);
+        return 0;
     }
 }
 

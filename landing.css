@@ -246,6 +246,34 @@
     margin: 0;
 }
 
+/* Steps Cards (New) */
+.steps-card {
+    text-align: center;
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    padding: 40px 32px;
+}
+
+.step-number {
+    width: 48px;
+    height: 48px;
+    background: var(--primary-blue);
+    color: white;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+    box-shadow: 0 8px 16px rgba(26, 115, 232, 0.2);
+}
+
+.steps-card:hover .step-number {
+    transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
 /* Footer / Final CTA */
 footer {
     padding: 120px 0 60px;

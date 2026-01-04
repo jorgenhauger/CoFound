@@ -153,8 +153,8 @@ async function initApp() {
     allPosts = await getPosts();
     renderPosts(allPosts);
 
-    // Hent co-foundere også (for "Finn Co-founder" tab)
-    allCoFounders = await getCoFounders();
+    // Hent ALLE profiler (både foundere og co-foundere) for "Finn profiler" tab
+    allCoFounders = await getAllProfiles(); // Endret funksjonsnavn i data.js (vi kaller variabelen fortsatt allCoFounders for mindre refactoring)
 }
 
 // Kjør init når siden er lastet
@@ -244,6 +244,12 @@ filterCheckboxes.forEach(checkbox => {
     checkbox.addEventListener('change', applyFilters);
 });
 
+// Lytt på rolle-endringer
+const roleRadios = document.querySelectorAll('input[name="role-filter"]');
+roleRadios.forEach(radio => {
+    radio.addEventListener('change', applySkillFilters); // Gjenbruk funksjon som trigger rendering
+});
+
 
 // --- TAB SWITCHING (Prosjekter vs Folk) ---
 const tabButtons = document.querySelectorAll('.tab-btn');
@@ -269,17 +275,20 @@ tabButtons.forEach(btn => {
 
         // Vis/Skjul filtre
         const categoryFilters = document.getElementById('category-filters');
+        const roleFilters = document.getElementById('role-filters'); // Ny
         const skillFilters = document.getElementById('skill-filters');
         const filterTitle = document.getElementById('filter-title');
 
         if (tab === 'projects') {
             categoryFilters.style.display = ''; // Reset to CSS default (flex on mobile, block on desktop)
+            if (roleFilters) roleFilters.style.display = 'none';
             if (skillFilters) skillFilters.style.display = 'none';
             if (filterTitle) filterTitle.textContent = 'Filtrer etter kategori';
         } else if (tab === 'cofounders') {
             categoryFilters.style.display = 'none';
+            if (roleFilters) roleFilters.style.display = ''; // Vis rolle-filter
             if (skillFilters) skillFilters.style.display = ''; // Reset to CSS default
-            if (filterTitle) filterTitle.textContent = 'Filtrer etter ferdigheter';
+            if (filterTitle) filterTitle.textContent = 'Filtrer profiler';
             renderSkillFilters();
         }
     });
@@ -408,8 +417,19 @@ function applySkillFilters() {
     const cofounderFeed = document.getElementById('cofounder-feed');
     let filtered = allCoFounders;
 
+    // 1. Filtrer på Rolle (Radio buttons)
+    const selectedRole = document.querySelector('input[name="role-filter"]:checked')?.value || 'all';
+
+    if (selectedRole !== 'all') {
+        filtered = filtered.filter(user => {
+            // Sjekk om rollen matcher (case insensitive for sikkerhets skyld)
+            return (user.role || '').toLowerCase() === selectedRole.toLowerCase();
+        });
+    }
+
+    // 2. Filtrer på Skills (Tags)
     if (selectedSkills.length > 0) {
-        filtered = allCoFounders.filter(user =>
+        filtered = filtered.filter(user =>
             user.skills && selectedSkills.some(skill => user.skills.includes(skill))
         );
     }
