@@ -36,7 +36,7 @@
     --shadow-md: 0 1px 3px 0 rgba(60, 64, 67, 0.3), 0 4px 8px 3px rgba(60, 64, 67, 0.15);
 }
 
-[data-theme="dark"] {
+body.dark-mode {
     --primary-color: #669df6;
     /* Slightly more vibrant blue for dark mode */
     --primary-hover: #8ab4f8;
@@ -800,14 +800,12 @@ button,
         box-sizing: border-box;
     }
 
-    /* Force full width and center alignment for cards on mobile */
-    .profile-card,
-    .project-card,
-    .card {
-        width: 100% !important;
+    /* Ensure no weird margins on cards in feed */
+    #feed .post-card,
+    #cofounder-feed .profile-card {
         margin-left: 0 !important;
         margin-right: 0 !important;
-        box-sizing: border-box;
+        width: 100% !important;
     }
 
     /* Prevent body overflow (Rigid Mobile Layout) */
