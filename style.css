@@ -874,15 +874,25 @@ button,
 
     /* Hide entire nav-links container on mobile (removes "Meldinger" and "Opprett innlegg") */
     /* Only show when searching/explore is active via JS class */
+    /* Hide entire nav-links container on mobile (removes "Meldinger" and "Opprett innlegg") */
+    /* Only show when searching/explore is active via JS class */
     .nav-links {
         display: none !important;
+        box-sizing: border-box;
     }
 
     .nav-links.mobile-visible {
         display: flex !important;
         flex-direction: row;
         width: 100%;
+        max-width: 100vw;
+        /* Hard stop */
         margin-top: 10px;
+        padding: 0 5px;
+        /* Add small padding instead of margin to prevent edge touching */
+        box-sizing: border-box;
+        overflow-x: hidden;
+        /* Prevent internal spill */
     }
 
     /* Hide the desktop links inside nav-links */
