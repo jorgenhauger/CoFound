@@ -158,8 +158,37 @@ async function initApp() {
 }
 
 // Kjør init når siden er lastet
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', async () => {
+    await initApp();
 
+    // Check URL params for tab switching (e.g. from "Utforsk" link)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+
+    if (tabParam === 'cofounders') {
+        const cofounderTabBtn = document.querySelector('.tab-btn[data-tab="cofounders"]');
+        if (cofounderTabBtn) cofounderTabBtn.click();
+        // Since click() triggers the listener, the class will be added there.
+        // But for safety/timing:
+        document.querySelector('.nav-links')?.classList.add('mobile-visible');
+    }
+});
+
+
+// Setup Mobile "Explore" Button to Toggle Search
+const exploreBtn = document.querySelector('.bottom-nav-item[href*="tab=cofounders"]');
+if (exploreBtn) {
+    exploreBtn.addEventListener('click', (e) => {
+        e.preventDefault(); // Stop navigation
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('mobile-visible');
+
+        // Focus search if opening
+        if (navLinks.classList.contains('mobile-visible')) {
+            document.getElementById('search-input')?.focus();
+        }
+    });
+}
 
 // --- EVENT LISTENERS & LOGIKK ---
 
@@ -263,6 +292,10 @@ tabButtons.forEach(btn => {
 
         const tab = btn.dataset.tab;
 
+        // Toggle Search Bar visibility on mobile -> REMOVED to allow persistent search
+        // const navLinks = document.querySelector('.nav-links');
+        // Logic moved to Explore button toggle
+
         // Vis/Skjul seksjoner
         if (tab === 'projects') {
             projectsSection.style.display = 'block';
@@ -304,10 +337,7 @@ function createCoFounderHTML(profile) {
     if (skills.length > MAX_VISIBLE_SKILLS) {
         // Escape name for usage in inline onclick
         const safeName = profile.name.replace(/'/g, "\\'");
-        // Store skills as data attribute or pass them directly if simple array
-        // Parsing array in inline onclick is messy, better to use global lookup or just attach event listener? 
-        // Simplest for now: join and split, OR just pass comma separated string and split in function.
-        // Or better: Use encoded JSON
+        // Store skills as data attribute
         const skillsJson = JSON.stringify(skills).replace(/"/g, '&quot;');
 
         skillsHTML += `<span class="tag more-tag" onclick="showSkillsModal('${safeName}', ${skillsJson})" style="cursor: pointer; background: var(--border-color); color: var(--text-main);">+${skills.length - MAX_VISIBLE_SKILLS}</span>`;
@@ -353,6 +383,38 @@ function createCoFounderHTML(profile) {
         </article>
     `;
 }
+
+// Global function to show skills modal
+window.showSkillsModal = function (name, skills) {
+    const modal = document.getElementById('skills-modal');
+    const title = document.getElementById('skills-modal-title');
+    const list = document.getElementById('skills-modal-list');
+    const closeBtn = document.querySelector('.close-skills');
+
+    if (!modal || !title || !list) return;
+
+    title.textContent = `Ferdigheter: ${name}`;
+    list.innerHTML = skills.map(skill => `<span class="tag">${skill}</span>`).join('');
+
+    modal.style.display = 'block';
+    // Small delay to allow display:block to apply before adding class for opacity transition
+    setTimeout(() => {
+        modal.classList.add('show');
+    }, 10);
+
+    // Close logic
+    const closeModal = () => {
+        modal.classList.remove('show');
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
+    };
+
+    if (closeBtn) closeBtn.onclick = closeModal;
+
+    // Window click closing logic is handled by existing general window listener or we add specific:
+    modal.onclick = (e) => {
+        if (e.target === modal) closeModal();
+    };
+};
 
 function renderCoFoundersUI() {
     const cofounderFeed = document.getElementById('cofounder-feed');

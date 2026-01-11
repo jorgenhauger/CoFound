@@ -873,12 +873,20 @@ button,
     }
 
     /* Hide entire nav-links container on mobile (removes "Meldinger" and "Opprett innlegg") */
+    /* Only show when searching/explore is active via JS class */
     .nav-links {
         display: none !important;
     }
 
-    /* Hide top profile text link on mobile */
-    .user-menu>div>a {
+    .nav-links.mobile-visible {
+        display: flex !important;
+        flex-direction: row;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    /* Hide the desktop links inside nav-links */
+    .nav-links>a {
         display: none !important;
     }
 
