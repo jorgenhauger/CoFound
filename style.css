@@ -1018,6 +1018,21 @@ button,
     color: var(--primary-color);
 }
 
+/* Bottom Nav Badge (Red Dot) */
+.nav-create-btn {
+    background-color: var(--primary-color);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin-top: -20px;
+    /* Pop out effect */
+    color: #ffffff !important;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.4);
+    border: 4px solid var(--surface-color);
+    /* Cutout effect */
+}
+
 .bottom-nav-item svg {
     width: 24px;
     height: 24px;
