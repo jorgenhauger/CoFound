@@ -141,6 +141,61 @@ if (document.readyState === 'loading') {
     }
 }
 
+// Custom Confirm Dialog
+function showConfirmDialog(message, onConfirm) {
+    // 1. Create elements
+    const overlay = document.createElement('div');
+    overlay.className = 'confirm-modal-overlay';
+
+    const modal = document.createElement('div');
+    modal.className = 'confirm-modal-content';
+
+    const msgEl = document.createElement('p');
+    msgEl.className = 'confirm-modal-message';
+    msgEl.textContent = message;
+
+    const actions = document.createElement('div');
+    actions.className = 'confirm-modal-actions';
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'confirm-modal-btn cancel';
+    cancelBtn.textContent = 'Avbryt';
+
+    const confirmBtn = document.createElement('button');
+    confirmBtn.className = 'confirm-modal-btn confirm';
+    confirmBtn.textContent = 'Slett';
+
+    // 2. Assemble
+    actions.appendChild(cancelBtn);
+    actions.appendChild(confirmBtn);
+    modal.appendChild(msgEl);
+    modal.appendChild(actions);
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    // 3. Logic
+    const close = () => {
+        overlay.classList.remove('show');
+        setTimeout(() => overlay.remove(), 200); // Wait for transition
+    };
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        overlay.classList.add('show');
+    });
+
+    // Event listeners
+    cancelBtn.onclick = close;
+    overlay.onclick = (e) => {
+        if (e.target === overlay) close();
+    };
+
+    confirmBtn.onclick = () => {
+        onConfirm();
+        close();
+    };
+}
+
 // Expose globally
 window.initTheme = initTheme;
 window.toggleTheme = toggleTheme;
@@ -149,3 +204,4 @@ window.redirectWithDelay = redirectWithDelay;
 window.escapeHTML = escapeHTML;
 window.calculateProfileCompleteness = calculateProfileCompleteness;
 window.triggerConfetti = triggerConfetti;
+window.showConfirmDialog = showConfirmDialog;
