@@ -112,7 +112,7 @@ function renderRecommendedFeed() {
         const badgeText = isHighMatch ? '🔥 Høy Match' : '⚡ Match';
 
         return `
-        <div class="recommended-card" onclick="window.location.href='post.html?id=${post.id}'" style="cursor: pointer;">
+        <div class="recommended-card" onclick="openInterestModal('${post.user_id}', '${escapeHTML(post.author)}', '${escapeHTML(post.title)}')" style="cursor: pointer;">
              <div style="margin-bottom: 8px;">
                 <span class="match-badge ${badgeClass}" style="font-size: 0.75rem;">${badgeText} (${post.matchScore})</span>
             </div>
