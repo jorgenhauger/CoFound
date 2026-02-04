@@ -18,45 +18,28 @@ let globalCurrentUserId = null; // Lagre ID globalt for enkel tilgang
 // --- VIEW POST MODAL LOGIC ---
 const viewPostModal = document.getElementById('view-post-modal');
 const closeViewPostBtns = document.querySelectorAll('.close-view-post, .close-view-post-btn');
-const viewPostContactBtn = document.getElementById('view-post-contact-btn');
 
 window.openViewPostModal = function (postId) {
-    const post = allPosts.find(p => p.id == postId); // Loose equality handling string/int
-    if (!post) {
-        console.error("Post not found:", postId);
-        return;
+    const post = allPosts.find(p => p.id == postId);
+    if (!post) return;
+
+    // Use specific container for the card
+    const container = document.getElementById('view-post-card-container');
+    if (!container) return;
+
+    // Generate strict Feed Card HTML
+    const cardHTML = createPostHTML(post);
+    container.innerHTML = cardHTML;
+
+    // Adjust styling to remove margin inside modal (optional)
+    const card = container.querySelector('.post-card');
+    if (card) {
+        card.style.margin = '0';
+        card.style.boxShadow = 'none'; // Using modal shadow instead
+        // Optional: Ensure "Meld interesse" button actually closes this modal?
+        // Code below handles generic openInterestModal chaining
     }
 
-    // Populate Data
-    document.getElementById('view-post-avatar').src = post.avatar;
-    document.getElementById('view-post-author').textContent = post.author;
-    document.getElementById('view-post-role').textContent = post.role;
-    document.getElementById('view-post-title').textContent = post.title;
-    document.getElementById('view-post-description').textContent = post.description;
-
-    // Tags
-    const tagsContainer = document.getElementById('view-post-tags');
-    tagsContainer.innerHTML = post.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('');
-
-    // Image
-    const imgContainer = document.getElementById('view-post-image-container');
-    const img = document.getElementById('view-post-image');
-    if (post.image) {
-        img.src = post.image;
-        imgContainer.style.display = 'block';
-    } else {
-        imgContainer.style.display = 'none';
-    }
-
-    // Contact Button Logic
-    viewPostContactBtn.onclick = () => {
-        closeViewPostModal(); // Close this modal first
-        setTimeout(() => { // Wait for transition
-            openInterestModal(post.user_id, post.author, post.title);
-        }, 100);
-    };
-
-    // Show Modal
     if (viewPostModal) {
         viewPostModal.style.display = 'block';
         setTimeout(() => viewPostModal.classList.add('show'), 10);
@@ -70,15 +53,62 @@ function closeViewPostModal() {
     }
 }
 
-// Listeners for closing View Post Modal
 if (closeViewPostBtns) {
-    closeViewPostBtns.forEach(btn => {
-        btn.addEventListener('click', closeViewPostModal);
-    });
+    closeViewPostBtns.forEach(btn => btn.addEventListener('click', closeViewPostModal));
 }
-// Close on outside click
 window.addEventListener('click', (e) => {
     if (e.target === viewPostModal) closeViewPostModal();
+});
+
+// --- TAB SWITCHING (Prosjekter vs Folk) ---
+const tabButtons = document.querySelectorAll('.tab-btn');
+const projectsSection = document.getElementById('projects-section');
+const cofoundersSection = document.getElementById('cofounders-section');
+const recommendedProjectsSection = document.getElementById('recommended-projects-section');
+const recommendedProfilesSection = document.getElementById('recommended-cofounders-section');
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const tab = btn.dataset.tab;
+
+        // Vis/Skjul hovedseksjoner
+        if (tab === 'projects') {
+            projectsSection.style.display = 'block';
+            cofoundersSection.style.display = 'none';
+            // Toggle Anbefalinger
+            if (recommendedProjectsSection) recommendedProjectsSection.style.display = 'block';
+            if (recommendedProfilesSection) recommendedProfilesSection.style.display = 'none';
+        } else if (tab === 'cofounders') {
+            projectsSection.style.display = 'none';
+            cofoundersSection.style.display = 'block';
+            renderCoFoundersUI();
+            // Toggle Anbefalinger
+            if (recommendedProjectsSection) recommendedProjectsSection.style.display = 'none';
+            if (recommendedProfilesSection) recommendedProfilesSection.style.display = 'block';
+        }
+
+        // Vis/Skjul filtre
+        const categoryFilters = document.getElementById('category-filters');
+        const roleFilters = document.getElementById('role-filters');
+        const skillFilters = document.getElementById('skill-filters');
+        const filterTitle = document.getElementById('filter-title');
+
+        if (tab === 'projects') {
+            categoryFilters.style.display = '';
+            if (roleFilters) roleFilters.style.display = 'none';
+            if (skillFilters) skillFilters.style.display = 'none';
+            if (filterTitle) filterTitle.textContent = 'Filtrer etter kategori';
+        } else if (tab === 'cofounders') {
+            categoryFilters.style.display = 'none';
+            if (roleFilters) roleFilters.style.display = '';
+            if (skillFilters) skillFilters.style.display = '';
+            if (filterTitle) filterTitle.textContent = 'Filtrer profiler';
+            renderSkillFilters();
+        }
+    });
 });
 
 // --- EXISTING INTEREST MODAL LOGIC ---
@@ -470,6 +500,9 @@ window.openInterestModal = function (userId, authorName, postTitle) {
         return;
     }
 
+    // Force close View Post Modal if open (to prevent stacking issues)
+    if (typeof closeViewPostModal === 'function') closeViewPostModal();
+
     modal.classList.add('show');
     modal.dataset.recipientId = userId; // Vi bruker ID nå, ikke email/navn
     modal.dataset.postTitle = postTitle || 'dette innlegget';
@@ -547,52 +580,7 @@ roleRadios.forEach(radio => {
 });
 
 
-// --- TAB SWITCHING (Prosjekter vs Folk) ---
-const tabButtons = document.querySelectorAll('.tab-btn');
-const projectsSection = document.getElementById('projects-section');
-const cofoundersSection = document.getElementById('cofounders-section');
 
-tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
-        const tab = btn.dataset.tab;
-
-        // Toggle Search Bar visibility on mobile -> REMOVED to allow persistent search
-        // const navLinks = document.querySelector('.nav-links');
-        // Logic moved to Explore button toggle
-
-        // Vis/Skjul seksjoner
-        if (tab === 'projects') {
-            projectsSection.style.display = 'block';
-            cofoundersSection.style.display = 'none';
-        } else if (tab === 'cofounders') {
-            projectsSection.style.display = 'none';
-            cofoundersSection.style.display = 'block';
-            renderCoFoundersUI();
-        }
-
-        // Vis/Skjul filtre
-        const categoryFilters = document.getElementById('category-filters');
-        const roleFilters = document.getElementById('role-filters'); // Ny
-        const skillFilters = document.getElementById('skill-filters');
-        const filterTitle = document.getElementById('filter-title');
-
-        if (tab === 'projects') {
-            categoryFilters.style.display = ''; // Reset to CSS default (flex on mobile, block on desktop)
-            if (roleFilters) roleFilters.style.display = 'none';
-            if (skillFilters) skillFilters.style.display = 'none';
-            if (filterTitle) filterTitle.textContent = 'Filtrer etter kategori';
-        } else if (tab === 'cofounders') {
-            categoryFilters.style.display = 'none';
-            if (roleFilters) roleFilters.style.display = ''; // Vis rolle-filter
-            if (skillFilters) skillFilters.style.display = ''; // Reset to CSS default
-            if (filterTitle) filterTitle.textContent = 'Filtrer profiler';
-            renderSkillFilters();
-        }
-    });
-});
 
 
 // --- CO-FOUNDER RENDERING ---

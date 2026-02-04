@@ -176,40 +176,19 @@
         </div>
     </main>
 
-    <!-- View Post Modal -->
+    <!-- View Post Modal (Simplified to show "Feed Card") -->
     <div id="view-post-modal" class="modal">
-        <div class="modal-content" style="max-width: 700px;">
-            <span class="close close-view-post">&times;</span>
+        <div class="modal-content"
+            style="max-width: 650px; padding: 20px; background: transparent; box-shadow: none; border: none;">
+            <!-- Close button for the modal (optional, since clicking outside usually works) -->
+            <!-- We might want a floating close button or none if clicking overlay works -->
 
-            <div id="view-post-header" style="margin-bottom: 20px; display: flex; align-items: center; gap: 15px;">
-                <!-- Populated by JS -->
-                <img id="view-post-avatar" src="" alt=""
-                    style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover;">
-                <div>
-                    <h3 id="view-post-author" style="margin: 0; color: var(--text-main);">Author</h3>
-                    <span id="view-post-role" style="font-size: 0.9rem; color: var(--text-secondary);">Role</span>
-                </div>
+            <div id="view-post-card-container">
+                <!-- Feed Card Injected Here -->
             </div>
 
-            <h2 id="view-post-title" style="margin-bottom: 10px;">Post Title</h2>
-            <div id="view-post-tags" class="post-tags" style="margin-bottom: 20px;">
-                <!-- Tags -->
-            </div>
-
-            <div id="view-post-image-container"
-                style="margin-bottom: 20px; display: none; border-radius: var(--radius-md); overflow: hidden;">
-                <img id="view-post-image" src="" alt="" style="width: 100%; height: auto; display: block;">
-            </div>
-
-            <div class="post-content-scroll" style="max-height: 400px; overflow-y: auto; margin-bottom: 30px;">
-                <p id="view-post-description" style="white-space: pre-wrap; color: var(--text-main); line-height: 1.6;">
-                    Description</p>
-            </div>
-
-            <div class="modal-actions" style="display: flex; justify-content: flex-end; gap: 10px;">
-                <button class="btn-secondary close-view-post-btn">Lukk</button>
-                <button id="view-post-contact-btn" class="btn-primary">Meld interesse</button>
-            </div>
+            <button class="btn-secondary close-view-post-btn"
+                style="margin-top: 10px; width: 100%; background: var(--surface-color); border: 1px solid var(--border-color);">Lukk</button>
         </div>
     </div>
 
