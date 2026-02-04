@@ -366,4 +366,9 @@ footer {
         padding: 8px 16px !important;
         font-size: 0.9rem !important;
     }
+
+    /* Override style.css global hidden state for landing page links */
+    .landing-nav .nav-links>a {
+        display: inline-flex !important;
+    }
 }
