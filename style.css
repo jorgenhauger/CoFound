@@ -2063,8 +2063,8 @@ input:checked+.slider:before {
     #cofounder-feed .post-card,
     #cofounder-feed .profile-card {
         width: 100% !important;
-        max-width: 800px !important;
-        /* Constrain width to look good on desktop */
+        max-width: 600px !important;
+        /* Narrower, cleaner feed */
         margin: 0 auto !important;
     }
 }
