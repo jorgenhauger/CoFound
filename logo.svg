@@ -1,0 +1,84 @@
+<svg width="512" height="512" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="organicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" /> <!-- Blue-500 -->
+      <stop offset="100%" style="stop-color:#1e3a8a;stop-opacity:1" /> <!-- Blue-900 -->
+    </linearGradient>
+    <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="4" result="offsetblur"/>
+      <feComponentTransfer>
+        <feFuncA type="linear" slope="0.2"/>
+      </feComponentTransfer>
+      <feMerge> 
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/> 
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- 
+    Shape: Concave Square with Rounded Corners (Organic/Pincushion)
+    Centered at 100, 100.
+    Dimensions approx 120x120.
+    Corners at +/- 60.
+    Squeeze factor: Sides curve in to +/- 45.
+  -->
+  <path d="
+    M 50 40
+    Q 100 55, 150 40
+    Q 160 40, 160 50
+    Q 145 100, 160 150
+    Q 160 160, 150 160
+    Q 100 145, 50 160
+    Q 40 160, 40 150
+    Q 55 100, 40 50
+    Q 40 40, 50 40
+    Z
+  " fill="url(#organicGrad)" filter="url(#softGlow)" />
+  
+  <!-- 
+     Wait, manual coordinate calculation check:
+     Top Left Corner area: (40, 40)
+     Top Right Corner area: (160, 40)
+     Bottom Right Corner area: (160, 160)
+     Bottom Left Corner area: (40, 160)
+
+     M 50 40 (Top Edge, slightly right of TL corner)
+     Q 100 55, 150 40
+       Control (100, 55): Center X, Y pushed down (squeeze top edge IN).
+       End (150, 40): Top Edge, slightly left of TR corner.
+     
+     Q 160 40, 160 50
+       Control (160, 40): The Corner Point TR.
+       End (160, 50): Right Edge, slightly below TR corner.
+       This creates a rounded corner.
+       
+     Q 145 100, 160 150
+       Control (145, 100): Center Y, X pushed left (squeeze right edge IN).
+       End (160, 150): Right Edge, slightly above BR corner.
+       
+     Q 160 160, 150 160
+       Control (160, 160): Corner BR.
+       End (150, 160): Bottom Edge, right of BR corner.
+       
+     Q 100 145, 50 160
+       Control (100, 145): Center X, Y pushed up (squeeze bottom edge IN).
+       End (50, 160): Bottom Edge, left of BL corner.
+       
+     Q 40 160, 40 150
+       Control (40, 160): Corner BL.
+       End (40, 150): Left Edge, above BL corner.
+       
+     Q 55 100, 40 50
+       Control (55, 100): Center Y, X pushed right (squeeze left edge IN).
+       End (40, 50): Left Edge, below TL corner.
+       
+     Q 40 40, 50 40
+       Control (40, 40): Corner TL.
+       End (50, 40): Close loop/Join start.
+       
+     Result: A soft square with concave sides.
+  -->
+
+</svg>
