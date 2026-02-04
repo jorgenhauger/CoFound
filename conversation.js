@@ -1,5 +1,7 @@
 // conversation.js - Chat logic using Supabase
 
+let conversationUnsubscribe = null; // Store unsubscribe function
+
 document.addEventListener('DOMContentLoaded', async () => {
     try {
         const currentUser = await getSessionUser();
@@ -102,7 +104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (result.success) {
                 if (window.triggerConfetti) triggerConfetti();
                 replyInput.value = '';
-                await renderChat(); // Refresh chat
+                // Don't need to call renderChat() - realtime will handle it
             } else {
                 alert("Kunne ikke sende melding: " + result.message);
             }
@@ -113,37 +115,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         // --- Init ---
         await loadParticipant();
         await renderChat();
-
-
-        // --- Sanntid: Lytt etter nye meldinger i denne samtalen ---
-        async function setupConversationRealtime() {
-            db.channel(`chat-${participantId}`)
-                .on('postgres_changes', {
-                    event: 'INSERT',
-                    schema: 'public',
-                    table: 'messages'
-                }, (payload) => {
-                    const msg = payload.new;
-                    // Sjekk om meldingen tilhører denne samtalen
-                    const isBetweenUs = (msg.from_id === currentUser.id && msg.to_id === participantId) ||
-                        (msg.from_id === participantId && msg.to_id === currentUser.id);
-
-                    if (isBetweenUs) {
-                        console.log('Ny chat-melding mottatt!');
-                        renderChat();
-                        if (msg.to_id === currentUser.id) {
-                            markConversationAsRead(participantId);
-                        }
-                    }
-                })
-                .subscribe();
-        }
-
-        // --- Init ---
-        await loadParticipant();
-        await renderChat();
         markConversationAsRead(participantId);
-        setupConversationRealtime();
+
+        // --- Real-time: Subscribe to conversation messages ---
+        conversationUnsubscribe = subscribeToConversation(currentUser.id, participantId, (newMessage) => {
+            console.log('New message received in conversation:', newMessage);
+            renderChat(); // Re-render entire chat
+
+            // Auto-mark as read if we're viewing this conversation
+            if (newMessage.to_id === currentUser.id) {
+                markConversationAsRead(participantId);
+            }
+        });
 
         // --- Event Listeners ---
         if (sendReplyBtn) sendReplyBtn.addEventListener('click', sendReply);
@@ -163,5 +146,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (chatMessages) {
             chatMessages.innerHTML = `<div style="color: red; padding: 20px;">Feil ved lasting av samtale.</div>`;
         }
+    }
+});
+
+// Cleanup when leaving page
+window.addEventListener('beforeunload', () => {
+    if (conversationUnsubscribe) {
+        conversationUnsubscribe();
     }
 });

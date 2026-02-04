@@ -57,6 +57,11 @@ async function loginUser(email, password) {
 
 // Logg ut bruker
 async function logoutUser() {
+    // Unsubscribe from all real-time channels first
+    if (typeof unsubscribeAll === 'function') {
+        unsubscribeAll();
+    }
+
     await db.auth.signOut();
 
     // Ta vare på tema-innstillingen før vi tømmer
