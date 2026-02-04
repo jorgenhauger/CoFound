@@ -15,6 +15,74 @@ let myFavoriteProjects = [];
 let myFavoriteUsers = [];
 let globalCurrentUserId = null; // Lagre ID globalt for enkel tilgang
 
+// --- VIEW POST MODAL LOGIC ---
+const viewPostModal = document.getElementById('view-post-modal');
+const closeViewPostBtns = document.querySelectorAll('.close-view-post, .close-view-post-btn');
+const viewPostContactBtn = document.getElementById('view-post-contact-btn');
+
+window.openViewPostModal = function (postId) {
+    const post = allPosts.find(p => p.id == postId); // Loose equality handling string/int
+    if (!post) {
+        console.error("Post not found:", postId);
+        return;
+    }
+
+    // Populate Data
+    document.getElementById('view-post-avatar').src = post.avatar;
+    document.getElementById('view-post-author').textContent = post.author;
+    document.getElementById('view-post-role').textContent = post.role;
+    document.getElementById('view-post-title').textContent = post.title;
+    document.getElementById('view-post-description').textContent = post.description;
+
+    // Tags
+    const tagsContainer = document.getElementById('view-post-tags');
+    tagsContainer.innerHTML = post.tags.map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('');
+
+    // Image
+    const imgContainer = document.getElementById('view-post-image-container');
+    const img = document.getElementById('view-post-image');
+    if (post.image) {
+        img.src = post.image;
+        imgContainer.style.display = 'block';
+    } else {
+        imgContainer.style.display = 'none';
+    }
+
+    // Contact Button Logic
+    viewPostContactBtn.onclick = () => {
+        closeViewPostModal(); // Close this modal first
+        setTimeout(() => { // Wait for transition
+            openInterestModal(post.user_id, post.author, post.title);
+        }, 100);
+    };
+
+    // Show Modal
+    if (viewPostModal) {
+        viewPostModal.style.display = 'block';
+        setTimeout(() => viewPostModal.classList.add('show'), 10);
+    }
+};
+
+function closeViewPostModal() {
+    if (viewPostModal) {
+        viewPostModal.classList.remove('show');
+        setTimeout(() => viewPostModal.style.display = 'none', 300);
+    }
+}
+
+// Listeners for closing View Post Modal
+if (closeViewPostBtns) {
+    closeViewPostBtns.forEach(btn => {
+        btn.addEventListener('click', closeViewPostModal);
+    });
+}
+// Close on outside click
+window.addEventListener('click', (e) => {
+    if (e.target === viewPostModal) closeViewPostModal();
+});
+
+// --- EXISTING INTEREST MODAL LOGIC ---
+
 // --- SMART MATCHING LOGIC ---
 
 // Beregn match-score for PROSJEKTER
@@ -112,7 +180,7 @@ function renderRecommendedFeed() {
         const badgeText = isHighMatch ? '🔥 Høy Match' : '⚡ Match';
 
         return `
-        <div class="recommended-card" onclick="openInterestModal('${post.user_id}', '${escapeHTML(post.author)}', '${escapeHTML(post.title)}')" style="cursor: pointer;">
+        <div class="recommended-card" onclick="openViewPostModal('${post.id}')" style="cursor: pointer;">
              <div style="margin-bottom: 8px;">
                 <span class="match-badge ${badgeClass}" style="font-size: 0.75rem;">${badgeText} (${post.matchScore})</span>
             </div>
