@@ -18,6 +18,13 @@
 
 <body class="landing-body">
 
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader-content">
+            <img src="logo.svg" alt="CoFound Loading" class="loader-logo">
+        </div>
+    </div>
+
     <!-- Navikasjonsbar -->
     <nav class="navbar landing-nav" id="mainNav">
         <div class="container nav-content">
@@ -139,6 +146,15 @@
     <script src="supabase.js"></script>
     <script src="data.js"></script>
     <script>
+        // Preloader Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            preloader.classList.add('fade-out');
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 800); // Wait for transition
+        });
+
         // Nav scroll effect
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('mainNav');
