@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Preview</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+        }
+
+        .box {
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .light {
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .dark {
+            background: #0f172a;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        img {
+            width: 150px;
+            hright: 150px;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        h2 {
+            margin: 0;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>CoFound Logo Preview</h1>
+    <div class="container">
+        <div class="box light">
+            <img src="logo.svg" alt="CoFound Logo Light">
+            <h2>Light Mode</h2>
+        </div>
+        <div class="box dark">
+            <img src="logo.svg" alt="CoFound Logo Dark">
+            <h2>Dark Mode</h2>
+        </div>
+    </div>
+</body>
+
+</html>
