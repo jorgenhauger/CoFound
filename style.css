@@ -997,6 +997,24 @@ button,
         /* Slight offset to prevent left-edge cut-off */
     }
 
+    /* Desktop Grid Layout for Feeds (Consistent Width) */
+    @media (min-width: 769px) {
+
+        #feed,
+        #cofounder-feed {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        #feed .post-card,
+        #cofounder-feed .profile-card {
+            width: 100%;
+            margin: 0;
+        }
+    }
+
     /* Hide scrollbar for cleaner look */
     .filter-options::-webkit-scrollbar,
     #category-filters::-webkit-scrollbar,
