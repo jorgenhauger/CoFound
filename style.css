@@ -1947,10 +1947,11 @@ input:checked+.slider:before {
     display: none;
 }
 
-/* Recommended Card (slightly smaller/different than main feed) */
+/* Recommended Card (2 visible on desktop, swipe for more) */
 .recommended-card {
     min-width: 280px;
-    max-width: 280px;
+    /* Fallback / Mobile default */
+    width: 280px;
     scroll-snap-align: start;
     background: var(--surface-color);
     border: 1px solid var(--border-color);
@@ -1960,6 +1961,15 @@ input:checked+.slider:before {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+/* Adjust for Desktop to show exactly 2 */
+@media (min-width: 769px) {
+    .recommended-card {
+        min-width: calc(50% - 12px);
+        width: calc(50% - 12px);
+        max-width: calc(50% - 12px);
+    }
 }
 
 .recommended-card:hover {

@@ -238,7 +238,7 @@ function renderRecommendedProfiles() {
     }).filter(p => p.matchScore > 0);
 
     scoredProfiles.sort((a, b) => b.matchScore - a.matchScore);
-    const topMatches = scoredProfiles.slice(0, 2); // Show only top 2 to match Projects feed layout
+    const topMatches = scoredProfiles.slice(0, 10); // Show top 10 matches (scrollable)
 
     // VISIBILITY CHECK: Only show if we are on the cofounders tab
     const isBackTab = document.querySelector('.tab-btn[data-tab="cofounders"]').classList.contains('active');
