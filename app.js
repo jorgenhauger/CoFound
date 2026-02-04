@@ -15,8 +15,197 @@ let myFavoriteProjects = [];
 let myFavoriteUsers = [];
 let globalCurrentUserId = null; // Lagre ID globalt for enkel tilgang
 
+// --- SMART MATCHING LOGIC ---
+
+// Beregn match-score for PROSJEKTER
+function calculateMatchScore(postTags) {
+    if (!window.currentUser || !window.currentUser.skills || !postTags) return 0;
+
+    const userSkills = window.currentUser.skills.map(s => s.toLowerCase());
+    const tags = postTags.map(t => t.toLowerCase());
+
+    const intersection = tags.filter(tag => userSkills.includes(tag));
+    return intersection.length;
+}
+
+// Beregn match-score for PROFILER
+function calculateProfileMatchScore(profile) {
+    if (!window.currentUser || !window.currentUser.skills || !profile.skills) return 0;
+
+    // 0. Ikke match deg selv
+    if (profile.id === window.currentUser.id) return 0;
+
+    const mySkills = window.currentUser.skills.map(s => s.toLowerCase());
+    const theirSkills = profile.skills.map(s => s.toLowerCase());
+
+    // 1. Skill Overlap (+1 per skill)
+    const intersection = theirSkills.filter(skill => mySkills.includes(skill));
+    let score = intersection.length;
+
+    // 2. Rolle-kompatibilitet (Founder + Co-founder = Match)
+    const myRole = (window.currentUser.role || '').toLowerCase();
+    const theirRole = (profile.role || '').toLowerCase();
+
+    // Enkel logikk: Hvis vi har forskjellige roller, er det bra (Founder leter ofte etter Co-founder og omvendt)
+    if (myRole !== theirRole && (myRole === 'founder' || myRole === 'co-founder') && (theirRole === 'founder' || theirRole === 'co-founder')) {
+        score += 2; // Bonus
+    }
+
+    return score;
+}
+
+
+// Render "Anbefalte PROSJEKTER"
+function renderRecommendedFeed() {
+    const recommendedSection = document.getElementById('recommended-projects-section'); // Opdatert ID
+    if (!recommendedSection) {
+        // Fallback for sikkerhet hvis HTML ikke er oppdatert ennå i DOM
+        const old = document.getElementById('recommended-section');
+        if (old) old.id = 'recommended-projects-section';
+    }
+
+    const section = document.getElementById('recommended-projects-section');
+    const container = document.getElementById('recommended-feed');
+
+    if (!section || !container || !allPosts.length) return;
+
+    // Kun vis hvis vi er på prosjekt-fanen (sjekkes også ved tab-switch, men greit å ha her)
+    // ... (Vi styrer visnling via tab-event listeners nedenfor)
+
+    const scoredPosts = allPosts.map(post => {
+        return { ...post, matchScore: calculateMatchScore(post.tags) };
+    }).filter(post => post.matchScore > 0);
+
+    scoredPosts.sort((a, b) => b.matchScore - a.matchScore);
+    const topMatches = scoredPosts.slice(0, 5);
+
+    // VISIBILITY CHECK: Only show if we are strictly on the projects tab
+    const projectsTab = document.querySelector('.tab-btn[data-tab="projects"]');
+    // If no tab system exists (e.g. other page), default to true? No, feed.html always has it.
+    const isProjectsTabActive = projectsTab ? projectsTab.classList.contains('active') : true;
+
+    if (isProjectsTabActive) {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
+
+    if (topMatches.length === 0) {
+        container.innerHTML = `
+            <div class="empty-match-state">
+                <div style="font-size: 2rem; margin-bottom: 8px;">🌱</div>
+                <h4 style="margin: 0 0 4px 0;">Ingen prosjekt-matcher</h4>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                    Vi fant ingen prosjekter. 
+                    <a href="edit-profile.html" style="color: var(--primary-color);">Lagt til flere skills?</a>
+                </p>
+            </div>
+        `;
+        container.style.justifyContent = 'flex-start';
+        return;
+    }
+
+    // Render cards
+    container.innerHTML = topMatches.map(post => {
+        const isHighMatch = post.matchScore >= 2;
+        const badgeClass = isHighMatch ? 'match-score-high' : '';
+        const badgeText = isHighMatch ? '🔥 Høy Match' : '⚡ Match';
+
+        return `
+        <div class="recommended-card" onclick="window.location.href='post.html?id=${post.id}'" style="cursor: pointer;">
+             <div style="margin-bottom: 8px;">
+                <span class="match-badge ${badgeClass}" style="font-size: 0.75rem;">${badgeText} (${post.matchScore})</span>
+            </div>
+            <h4 style="margin: 0 0 8px 0; font-size: 1rem; color: var(--text-main); line-height: 1.3;">
+                ${escapeHTML(post.title)}
+            </h4>
+            <div class="post-tags" style="margin-top: auto;">
+                ${post.tags.slice(0, 2).map(tag => `<span class="tag">${escapeHTML(tag)}</span>`).join('')}
+                ${post.tags.length > 2 ? `<span class="tag">+${post.tags.length - 2}</span>` : ''}
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+// Render "Anbefalte PROFILER"
+function renderRecommendedProfiles() {
+    const section = document.getElementById('recommended-cofounders-section');
+    const container = document.getElementById('recommended-cofounder-feed');
+
+    if (!section || !container || !allCoFounders.length) return;
+
+    const scoredProfiles = allCoFounders.map(profile => {
+        return { ...profile, matchScore: calculateProfileMatchScore(profile) };
+    }).filter(p => p.matchScore > 0);
+
+    scoredProfiles.sort((a, b) => b.matchScore - a.matchScore);
+    const topMatches = scoredProfiles.slice(0, 5);
+
+    // VISIBILITY CHECK: Only show if we are on the cofounders tab
+    const isBackTab = document.querySelector('.tab-btn[data-tab="cofounders"]').classList.contains('active');
+    if (isBackTab) {
+        section.style.display = 'block';
+    } else {
+        section.style.display = 'none';
+    }
+
+    if (topMatches.length === 0) {
+        container.innerHTML = `
+            <div class="empty-match-state">
+                <div style="font-size: 2rem; margin-bottom: 8px;">🤷‍♂️</div>
+                <h4 style="margin: 0 0 4px 0;">Ingen profil-matcher</h4>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin: 0;">
+                    Ingen profiler matcher dine skills akkurat nå.
+                </p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = topMatches.map(profile => {
+        const isHighMatch = profile.matchScore >= 3; // Litt høyere terskel for profiles (siden role gir +2)
+        const badgeClass = isHighMatch ? 'match-score-high' : '';
+        const badgeText = isHighMatch ? '🔥 Solid Match' : '⚡ Match';
+
+        const avatarUrl = profile.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${profile.name}`;
+
+        return `
+        <div class="recommended-card" onclick="window.location.href='profile.html?user=${profile.id}'" style="cursor: pointer;">
+             <div style="margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+                <span class="match-badge ${badgeClass}" style="font-size: 0.75rem;">${badgeText}</span>
+            </div>
+            
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                <img src="${avatarUrl}" alt="${escapeHTML(profile.name)}" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                <div>
+                     <h4 style="margin: 0; font-size: 0.95rem; color: var(--text-main);">${escapeHTML(profile.name)}</h4>
+                     <span style="font-size: 0.8rem; color: var(--text-secondary);">${escapeHTML(profile.role)}</span>
+                </div>
+            </div>
+
+            <div class="post-tags" style="margin-top: auto;">
+                ${(profile.skills || []).slice(0, 2).map(skill => `<span class="tag">${escapeHTML(skill)}</span>`).join('')}
+                 ${(profile.skills || []).length > 2 ? `<span class="tag">+${(profile.skills || []).length - 2}</span>` : ''}
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
 // Funksjon for å lage HTML for et enkelt innlegg
 function createPostHTML(post) {
+    // Beregn match for hoved-feeden også
+    const matchScore = calculateMatchScore(post.tags);
+    let matchBadgeHTML = '';
+
+    if (matchScore > 0) {
+        const isHighMatch = matchScore >= 2;
+        const badgeClass = isHighMatch ? 'match-score-high' : '';
+        const badgeText = isHighMatch ? '🔥 Høy Match' : '⚡ Match';
+        matchBadgeHTML = `<span class="match-badge ${badgeClass}">${badgeText} (${matchScore} skills)</span>`;
+    }
+
     // Lager tags-HTML
     const tagsHTML = post.tags.map(tag => `<span class="tag">${tag}</span>`).join('');
 
@@ -52,6 +241,7 @@ function createPostHTML(post) {
             </div>
             <div class="post-content">
                 <h2>${escapeHTML(post.title)}</h2>
+                ${matchBadgeHTML ? `<div style="margin-bottom: 8px;">${matchBadgeHTML}</div>` : ''}
                 ${imageHTML}
                 <p>${escapeHTML(post.description)}</p>
                 <div class="post-tags">
@@ -153,6 +343,11 @@ async function initApp() {
     allPosts = await getPosts();
     renderPosts(allPosts);
 
+    // NYTT: Render anbefalt feed hvis logget inn
+    if (window.currentUser && window.currentUser.skills && window.currentUser.skills.length > 0) {
+        renderRecommendedFeed();
+    }
+
     // Hent ALLE profiler (både foundere og co-foundere) for "Finn profiler" tab
     allCoFounders = await getAllProfiles(); // Endret funksjonsnavn i data.js (vi kaller variabelen fortsatt allCoFounders for mindre refactoring)
 }
@@ -165,12 +360,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const tabParam = urlParams.get('tab');
 
-    if (tabParam === 'cofounders') {
-        const cofounderTabBtn = document.querySelector('.tab-btn[data-tab="cofounders"]');
+    if (urlParams.get('tab') === 'cofounders') {
+        const cofounderTabBtn = document.querySelector('[data-tab="cofounders"]');
         if (cofounderTabBtn) cofounderTabBtn.click();
         // Since click() triggers the listener, the class will be added there.
         // But for safety/timing:
         document.querySelector('.nav-links')?.classList.add('mobile-visible');
+    } else {
+        // Default to projects: Render both recommended lists so they are ready
+        renderRecommendedFeed(); // Projects
+        renderRecommendedProfiles(); // Profiles (hidden but ready)
     }
 });
 

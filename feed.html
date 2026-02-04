@@ -125,19 +125,54 @@
                 </div>
             </aside>
 
-            <!-- Feed med innlegg -->
-            <section id="projects-section" class="feed-section">
-                <div id="feed">
-                    <!-- Innlegg lastes her dynamisk -->
-                </div>
-            </section>
+            <!-- Main Content Wrapper -->
+            <div class="feed-content-wrapper">
+                <!-- Anbefalt PROSJEKTER (Vises kun på prosjekt-fanen) -->
+                <section id="recommended-projects-section" style="display: none; margin-bottom: 40px;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.2rem;">🔥</span> Anbefalte prosjekter
+                        </h3>
+                    </div>
+                    <div class="recommended-feed-container">
+                        <!-- Horizontal scroll container -->
+                        <div id="recommended-feed" class="horizontal-scroll-snap">
+                            <!-- Recommended items injected here -->
+                        </div>
+                    </div>
+                </section>
 
-            <!-- Co-founders Section (hidden by default) -->
-            <section id="cofounders-section" class="feed-section" style="display: none;">
-                <div id="cofounder-feed">
-                    <!-- Co-founder profiler lastes her dynamisk -->
-                </div>
-            </section>
+                <!-- Feed med innlegg -->
+                <section id="projects-section" class="feed-section">
+                    <div id="feed">
+                        <!-- Innlegg lastes her dynamisk -->
+                    </div>
+                </section>
+
+                <!-- Anbefalt PROFILER (Vises kun på co-founder-fanen) -->
+                <section id="recommended-cofounders-section" style="display: none; margin-bottom: 40px;">
+                    <div
+                        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 1.2rem;">🤝</span> Anbefalte profiler
+                        </h3>
+                    </div>
+                    <div class="recommended-feed-container">
+                        <!-- Horizontal scroll container -->
+                        <div id="recommended-cofounder-feed" class="horizontal-scroll-snap">
+                            <!-- Recommended items injected here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Co-founders Section (hidden by default) -->
+                <section id="cofounders-section" class="feed-section" style="display: none;">
+                    <div id="cofounder-feed">
+                        <!-- Co-founder profiler lastes her dynamisk -->
+                    </div>
+                </section>
+            </div>
         </div>
     </main>
 
@@ -207,6 +242,7 @@
     <script src="data.js"></script>
     <script src="utils.js"></script>
     <script src="auth.js"></script>
+    <script>requireAuth();</script>
     <script src="app.js"></script>
     <script src="navbar-badge.js"></script>
 </body>

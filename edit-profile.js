@@ -112,6 +112,117 @@ if (addExperienceBtn) {
     });
 }
 
+// --- LOGIKK FOR FERDIGHETER-FORSLAG ---
+let availableSkills = new Set();
+const suggestionsList = document.getElementById('skills-suggestions');
+
+async function fetchAndCacheSkills() {
+    // Vi henter ALLE profiler for å crowdsource ferdigheter
+    try {
+        const profiles = await getAllProfiles();
+        if (profiles) {
+            // Bruk et Map for å normalisere: 'markedsføring' -> 'Markedsføring'
+            // Nøkkel = lowercase, Verdi = Pen visning (Første stor bokstav)
+            const skillMap = new Map();
+
+            profiles.forEach(p => {
+                if (p.skills && Array.isArray(p.skills)) {
+                    p.skills.forEach(s => {
+                        const clean = s.trim();
+                        if (!clean) return;
+
+                        const lower = clean.toLowerCase();
+                        // Vi lager en "Pen" versjon med stor forbokstav
+                        const capitalized = clean.charAt(0).toUpperCase() + clean.slice(1);
+
+                        // Lagre kun hvis vi ikke har den (eller overskriv hvis vi vil tvinge format)
+                        if (!skillMap.has(lower)) {
+                            skillMap.set(lower, capitalized);
+                        }
+                    });
+                }
+            });
+
+            availableSkills = new Set(skillMap.values());
+            console.log("Crowdsourced skills loaded (unique):", availableSkills.size);
+        }
+    } catch (err) {
+        console.warn("Kunne ikke laste ferdighetsforslag:", err);
+    }
+}
+
+if (skillsInput && suggestionsList) {
+    // 1. Last inn ferdigheter når siden laster
+    fetchAndCacheSkills();
+
+    // 2. Logikk for søk og visning
+    const showSuggestions = (term = '') => {
+        const lowerTerm = term.toLowerCase();
+
+        // Sortere: De som starter med termin, deretter alfabetisk
+        let matches = Array.from(availableSkills).filter(skill => {
+            if (!term) return true; // Vis alle hvis tomt
+            return skill.toLowerCase().startsWith(lowerTerm);
+        });
+
+        // Vis kun topp 15 for å holde det ryddig
+        matches = matches.slice(0, 15);
+
+        // Skjul hvis ingen treff
+        if (matches.length === 0) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        // Vis treff
+        suggestionsList.innerHTML = matches.map(skill =>
+            `<div class="suggestion-item">${skill}</div>`
+        ).join('');
+
+        suggestionsList.style.display = 'block';
+    };
+
+    // Lytt på input (når man skriver)
+    skillsInput.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const parts = val.split(',');
+        const currentTerm = parts[parts.length - 1].trim();
+        showSuggestions(currentTerm);
+    });
+
+    // Lytt på fokus (når man klikker i feltet) - "Bla gjennom" funksjon
+    skillsInput.addEventListener('focus', (e) => {
+        const val = e.target.value;
+        const parts = val.split(',');
+        const currentTerm = parts[parts.length - 1].trim();
+        // Vis forslag selv om feltet er tomt (viser da alle/populære)
+        showSuggestions(currentTerm);
+    });
+
+    // 3. Håndter klikk på forslag
+    suggestionsList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('suggestion-item')) {
+            const selectedSkill = e.target.textContent;
+
+            // Bytt ut det siste (påbegynte) ordet med valgt ferdighet
+            const parts = skillsInput.value.split(',');
+            parts[parts.length - 1] = ' ' + selectedSkill; // Legg til space for pent format
+
+            skillsInput.value = parts.join(', ') + ', '; // Legg til komma klart for neste
+            suggestionsList.style.display = 'none';
+            skillsInput.focus();
+        }
+    });
+
+    // 4. Skjul hvis man klikker utenfor
+    document.addEventListener('click', (e) => {
+        if (e.target !== skillsInput && e.target !== suggestionsList) {
+            suggestionsList.style.display = 'none';
+        }
+    });
+}
+
+
 // Lagrer endringer
 form.addEventListener('submit', async (e) => {
     e.preventDefault();

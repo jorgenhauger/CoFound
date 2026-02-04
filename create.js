@@ -3,6 +3,97 @@ const imageFileInput = document.getElementById('image-file');
 const imagePreviewContainer = document.getElementById('image-preview-container');
 const imagePreview = document.getElementById('image-preview');
 const removeImageBtn = document.getElementById('remove-image-btn');
+const tagsInput = document.getElementById('custom-tags');
+const suggestionsList = document.getElementById('tags-suggestions');
+
+let availableSkills = new Set();
+
+// --- SKILL SUGGESTIONS LOGIC (Shared with edit-profile) ---
+async function fetchAndCacheSkills() {
+    try {
+        const profiles = await getAllProfiles(); // Fra data.js
+        if (profiles) {
+            const skillMap = new Map();
+            profiles.forEach(p => {
+                if (p.skills && Array.isArray(p.skills)) {
+                    p.skills.forEach(s => {
+                        const clean = s.trim();
+                        if (!clean) return;
+                        const lower = clean.toLowerCase();
+                        const capitalized = clean.charAt(0).toUpperCase() + clean.slice(1);
+                        if (!skillMap.has(lower)) {
+                            skillMap.set(lower, capitalized);
+                        }
+                    });
+                }
+            });
+            availableSkills = new Set(skillMap.values());
+        }
+    } catch (err) {
+        console.warn("Kunne ikke laste tags-forslag:", err);
+    }
+}
+
+// Initialiser ferdigheter
+fetchAndCacheSkills();
+
+if (tagsInput && suggestionsList) {
+    const showSuggestions = (term = '') => {
+        const lowerTerm = term.toLowerCase();
+
+        let matches = Array.from(availableSkills).filter(skill => {
+            if (!term) return true;
+            return skill.toLowerCase().startsWith(lowerTerm);
+        });
+
+        matches = matches.slice(0, 15);
+
+        if (matches.length === 0) {
+            suggestionsList.style.display = 'none';
+            return;
+        }
+
+        suggestionsList.innerHTML = matches.map(skill =>
+            `<div class="suggestion-item">${skill}</div>`
+        ).join('');
+
+        suggestionsList.style.display = 'block';
+    };
+
+    tagsInput.addEventListener('input', (e) => {
+        const val = e.target.value;
+        const parts = val.split(',');
+        const currentTerm = parts[parts.length - 1].trim();
+        showSuggestions(currentTerm);
+    });
+
+    tagsInput.addEventListener('focus', (e) => {
+        const val = e.target.value;
+        const parts = val.split(',');
+        const currentTerm = parts[parts.length - 1].trim();
+        showSuggestions(currentTerm);
+    });
+
+    suggestionsList.addEventListener('click', (e) => {
+        if (e.target.classList.contains('suggestion-item')) {
+            const selectedSkill = e.target.textContent;
+            const parts = tagsInput.value.split(',');
+            parts[parts.length - 1] = ' ' + selectedSkill;
+            tagsInput.value = parts.join(', ') + ', ';
+            suggestionsList.style.display = 'none';
+            tagsInput.focus();
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        if (e.target !== tagsInput && e.target !== suggestionsList) {
+            suggestionsList.style.display = 'none';
+        }
+    });
+}
+// --- END SUGGESTIONS LOGIC ---
+
+
 
 // Forhåndsvisning av bilde
 if (imageFileInput) {
@@ -93,7 +184,11 @@ form.addEventListener('submit', async (e) => {
     // Behandle tags
     let tagsArray = [category];
     if (customTagsInput) {
-        const customTags = customTagsInput.split(',').map(tag => tag.trim()).filter(tag => tag.length > 0);
+        const customTags = customTagsInput.split(',')
+            .map(tag => tag.trim())
+            .filter(tag => tag.length > 0)
+            .map(tag => tag.charAt(0).toUpperCase() + tag.slice(1)); // Auto-Capitalize
+
         tagsArray = tagsArray.concat(customTags);
     }
     const tagsString = tagsArray.join(',');

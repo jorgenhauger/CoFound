@@ -57,9 +57,11 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group" style="position: relative;">
                         <label for="custom-tags">Tags (ferdigheter, teknologier) - skill med komma</label>
-                        <input type="text" id="custom-tags" placeholder="F.eks: React, B2B Salg, Regnskap, AI">
+                        <input type="text" id="custom-tags" placeholder="F.eks: React, B2B Salg, Regnskap, AI"
+                            autocomplete="off">
+                        <div id="tags-suggestions" class="suggestions-list"></div>
                     </div>
 
                     <div class="form-group">
@@ -95,10 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label for="tags">Nøkkelord (kommaseparert)</label>
-                        <input type="text" id="tags" placeholder="F.eks. React, Salg, Bærekraft">
-                    </div>
+
 
                     <div class="form-actions">
                         <a href="index.html" class="btn-secondary">Avbryt</a>
@@ -113,6 +112,7 @@
     <script src="data.js"></script>
     <script src="utils.js"></script>
     <script src="auth.js"></script>
+    <script>requireAuth();</script>
     <script src="create.js"></script>
 </body>
 
