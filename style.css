@@ -1487,9 +1487,8 @@ button,
 
 .message-card.unread {
     background: var(--input-bg);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2), 0 4px 12px rgba(26, 115, 232, 0.15);
     /* Removed thick border, using glow instead */
-    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2),
-        0 4px 12px rgba(26, 115, 232, 0.15);
 }
 
 .message-header {
@@ -2273,6 +2272,7 @@ input:checked+.slider:before {
 
 /* Mobile Optimizations for Messaging System */
 @media (max-width: 768px) {
+
     /* Message List Mobile */
     .messages-list {
         gap: 16px;
