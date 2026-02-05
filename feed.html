@@ -179,16 +179,19 @@
     <!-- View Post Modal (Simplified to show "Feed Card") -->
     <div id="view-post-modal" class="modal">
         <div class="modal-content"
-            style="max-width: 650px; padding: 20px; background: transparent; box-shadow: none; border: none;">
-            <!-- Close button for the modal (optional, since clicking outside usually works) -->
-            <!-- We might want a floating close button or none if clicking overlay works -->
+            style="max-width: 650px; padding: 20px; background: transparent; box-shadow: none; border: none; position: relative;">
+            <!-- X Close button in top-right -->
+            <button class="close-view-post-btn modal-close-x" aria-label="Lukk">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" fill="none">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
 
             <div id="view-post-card-container">
                 <!-- Feed Card Injected Here -->
             </div>
-
-            <button class="btn-secondary close-view-post-btn"
-                style="margin-top: 10px; width: 100%; background: var(--surface-color); border: 1px solid var(--border-color);">Lukk</button>
         </div>
     </div>
 
@@ -199,7 +202,7 @@
             <h2>Meld interesse</h2>
             <p>Skriv en kort melding til <span id="modal-recipient-name">Founderen</span>:</p>
             <textarea id="interest-message"
-                placeholder="Hei! Jeg saw prosjektet ditt og tenker at jeg passer perfekt fordi..."></textarea>
+                placeholder="Hei! Jeg så prosjektet ditt og tenker at jeg passer perfekt fordi..."></textarea>
             <div style="text-align: right; margin-top: 15px;">
                 <button id="send-interest-btn" class="btn-primary">Send melding</button>
             </div>
